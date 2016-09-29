@@ -1,0 +1,15 @@
+
+# BEGIN WordPress
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /dev/
+RewriteRule ^index\.php$ - [L]
+RewriteRule ^portal/?$ /dev/wp-login.php [QSA,L]
+RewriteRule ^portal/register/?$ /dev/wp-login.php?action=register [QSA,L]
+RewriteRule ^portal/lostpassword/?$ /dev/wp-login.php?action=lostpassword [QSA,L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /dev/index.php [L]
+</IfModule>
+
+# END WordPress
