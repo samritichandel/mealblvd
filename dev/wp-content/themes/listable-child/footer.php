@@ -64,13 +64,7 @@
 	<div class="empty-icon-svg"><?php get_template_part( 'assets/svg/map-pin-empty-svg' ); ?></div>
 	<div class="card-pin-svg"><?php get_template_part( 'assets/svg/pin-simple-svg' ); ?></div>
 </div>
-	<script>	
-/*var preloader = jQuery('.preloader');
-		jQuery(window).load(function () {
-			preloader.remove();
-		});
-	*/	
-		</script>
+	
 	<script>
         wow = new WOW({
             boxClass: 'wow', // default
@@ -81,6 +75,28 @@
         })
         wow.init();
 </script>
+
+ <script>
+        jQuery(window).load(function () {
+            // The slider being synced must be initialized first
+           jQuery('#carousel').flexslider({
+                animation: "slide"
+                , controlNav: false
+                , animationLoop: false
+                , slideshow: false
+                , itemWidth: 147
+                , itemMargin: 20
+                , asNavFor: '#slider'
+            });
+           jQuery('#slider').flexslider({
+                animation: "slide"
+                , controlNav: false
+                , animationLoop: false
+                , slideshow: false
+                , sync: "#carousel"
+            });
+        });
+    </script> 
 <?php wp_footer(); ?>
 
 </body>

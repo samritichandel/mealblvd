@@ -44,11 +44,30 @@
 		<?php }
 		endif; ?>
 	<?php endif; ?>
-
+	<?php 
+	//pages having dashboard option
+	$user_dash_pages=array(6,11041);
+	$show=(in_array($post->ID,$user_dash_pages))?true:false;
+	?>
 	<div class="entry-content" id="entry-content-anchor">
-	<div class="container">
+	<div class="container<?php if($show) echo ' listing_cust';?>">
 		<?php
-			the_content();
+			if($show)
+			{
+				if ( is_user_logged_in() ) 
+				{
+					the_content();
+				}
+				else
+				{
+					echo '<div class="message_login">You need to login first</div>';
+					
+				}
+			}
+			else
+			{
+				the_content();
+			}
 			wp_link_pages( array(
 				'before' => '<div class="page-links">' . esc_html__( 'Pages:', 'listable' ),
 				'after'  => '</div>',

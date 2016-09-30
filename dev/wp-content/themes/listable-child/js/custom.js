@@ -97,6 +97,40 @@ jQuery('#registration').validate({
 	}
 	
 });
+
+//validation for post a meal
+//add method for select
+jQuery.validator.addMethod("valueNotEquals", function(value, element, arg){
+  return arg != value;
+ }, "Value must not equal arg.");
+ jQuery("#submit-job-form").validate({
+  rules: {
+   meal_type: { valueNotEquals: 0 },
+   min_guest: { valueNotEquals: 0 },
+   max_guest: { valueNotEquals: 0 },
+   type_cuisine: { valueNotEquals: 0 },
+   currency: { valueNotEquals: 0 },
+   job_title: {required: true,maxlength: 10,},
+   price: {required: true,digits: true,maxlength: 5}
+   },
+  messages: {
+  meal_type: { valueNotEquals: "Please select a value" },
+  min_guest: { valueNotEquals: "Please select a value" },
+  max_guest: { valueNotEquals: "Please select a value" },
+  type_cuisine: { valueNotEquals: "Please select a value" },
+  currency: { valueNotEquals: "Please select a value" },
+  job_title: {
+				required: "Please enter title",
+				maxlength: "Title should be less then 10 characters"
+			},
+	price: {
+				required: "Please enter price ",
+				digits: "Please enter a valid price value",
+				maxlength: "Price should not be greater then 5 digits"}
+  }  
+ });
+
+
 	
 });
 

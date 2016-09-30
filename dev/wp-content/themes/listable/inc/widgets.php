@@ -218,6 +218,7 @@ class Listing_Content_Widget extends WP_Widget {
 			</div>
 
 		<?php endif;
+		
 
 		// if ( candidates_can_apply() ) {get_job_manager_template( 'job-application.php' ); }
 

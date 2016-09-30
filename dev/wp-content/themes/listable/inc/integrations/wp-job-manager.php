@@ -339,7 +339,6 @@ function listable_add_hours_field( $fields ) {
 	unset( $fields['_company_video'] );
 	unset( $fields['_company_name'] );
 	unset( $fields['_application'] );
-
 	return $fields;
 }
 
@@ -424,7 +423,7 @@ function custom_submit_job_form_fields( $fields ) {
 		'type' => 'select',
 		'options' => $mealtype_final_array,
 		'required' => true,
-		'priority' => 1
+		
 		);
 		
 		
@@ -442,7 +441,7 @@ function custom_submit_job_form_fields( $fields ) {
 		'type' => 'select',
 		'options' => $max_arr,
 		'required' => true,
-		'priority' => 1
+		'priority' => 1.1
 		);
 		
 	//get the cuisine type
@@ -451,7 +450,7 @@ function custom_submit_job_form_fields( $fields ) {
 		'type' => 'select',
 		'options' => $cuisine_data_final_array,
 		'required' => true,
-		'priority' => 1
+		'priority' => 1.2
 		);
 		
 		
@@ -461,7 +460,7 @@ function custom_submit_job_form_fields( $fields ) {
 		'type' => 'select',
 		'options' => $currency_data_final_array,
 		'required' => true,
-		'priority' => 1
+		'priority' => 1.7
 		);
 	
 		
@@ -469,27 +468,27 @@ function custom_submit_job_form_fields( $fields ) {
 	$fields['job']['price'] = array(
 		'label' => 'Price per guest',
 		'type' => 'text',
-		'required' => true,
-		'priority' => 1
+		'priority' => 1.6,
+		'required' => true
 		);
 		
 		//textarea for menu_name
 		$fields['job']['menu'] = array(
 		'label' => 'Menu',
 		'type' => 'textarea',
-		'required' => true,
-		'priority' => 2.2
+		'priority' => 1.4
 		);
 		
 	
 	$fields['job']['job_title']['label']       = esc_html__( 'Meal Title', 'listable' );
 	$fields['job']['job_title']['placeholder'] = esc_html__( 'Add a Title', 'listable' );
+	$fields['job']['job_title']['priority'] = 1.3;
 
 	$fields['company']['company_tagline']['priority']    = 2.1;
-	$fields['company']['company_tagline']['placeholder'] = esc_html__( 'e.g Speciality Coffee Shop', 'listable' );
+	$fields['company']['company_tagline']['placeholder'] = esc_html__( 'The one which best defines your meal', 'listable' );
 	$fields['company']['company_tagline']['description'] = sprintf( '<span class="description_tooltip left">%s</span>', esc_html__( 'Keep it short and descriptive as it will appear on search results instead of the link description', 'listable' ) );
 
-	$fields['job']['job_description']['priority']    = 2.2;
+	$fields['job']['job_description']['priority']    = 1.5;
 //	$fields['job']['job_description']['type']        = 'textarea';
 	$fields['job']['job_description']['placeholder'] = esc_html__( 'An overview of your listing and the things you love about it.', 'listable' );
 
@@ -512,9 +511,9 @@ function custom_submit_job_form_fields( $fields ) {
 	$fields['job']['job_location']['description'] = esc_html__( 'Leave this blank if the location is not important.', 'listable' );
 
 
-	$fields['company']['main_image']['label']              = esc_html__( 'Gallery Images', 'listable' );
+	$fields['company']['main_image']['label']              = esc_html__( 'Upload Your Best Photo Of Your Food And Venu', 'listable' );
 	$fields['company']['main_image']['priority']           = 2.6;
-	$fields['company']['main_image']['required']           = false;
+	$fields['company']['main_image']['required']           = true;
 	$fields['company']['main_image']['type']               = 'file';
 	$fields['company']['main_image']['ajax']               = true;
 	$fields['company']['main_image']['placeholder']        = '';
@@ -557,6 +556,7 @@ function custom_submit_job_form_fields( $fields ) {
 	unset( $fields['job']['application'] );
 	unset( $fields['job']['job_hours'] );
 	unset( $fields['job']['job_tags'] );
+	unset( $fields['company']['company_website'] );
 	
 //	$fields['company']['company_name']['priority'] = 1.5;
 

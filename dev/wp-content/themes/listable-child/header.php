@@ -29,7 +29,7 @@ session_start();
 	$GLOBALS['upload_directory_path'] =$_SERVER['DOCUMENT_ROOT'].'/dev/wp-content/themes/listable-child/uploads/';
 	global $array_pages;
 	
-	$array_pages=array( 11193, 11117,68,6);
+	$array_pages=array( 11193, 11117,68,6,11041);
 	$class=(is_page($array_pages))? 'no-bg':''; 
 	$content_class=(is_page($array_pages))? ' inner_page_cntnt':''; 
 	$transparent= (is_page($array_pages))? ' ':' header--transparent'; 
