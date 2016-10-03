@@ -121,9 +121,12 @@ function meal_meta_box($object, $box)
 		
 		<p class="form-field">
 			<label for="_price">Add Your Menu:</label>
-			<textarea name="menu" id="menu">
-			<?php echo $menu; ?> 
-			</textarea>
+			<?php
+				wp_editor( $menu, 'menu' );
+			?>
+			<!--<textarea name="menu" id="menu">
+			<?php// echo $menu; ?> 
+			</textarea>-->
 		</p>
 	</div>
 	<?php

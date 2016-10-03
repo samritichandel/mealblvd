@@ -475,7 +475,8 @@ function custom_submit_job_form_fields( $fields ) {
 		//textarea for menu_name
 		$fields['job']['menu'] = array(
 		'label' => 'Menu',
-		'type' => 'textarea',
+		'type' => 'wp-editor',
+		'class'=> 'test',
 		'priority' => 1.4
 		);
 		
@@ -509,6 +510,7 @@ function custom_submit_job_form_fields( $fields ) {
 	$fields['job']['job_location']['priority']    = 2.5;
 	$fields['job']['job_location']['placeholder'] = esc_html__( 'e.g 34 Wigmore Street, London', 'listable' );
 	$fields['job']['job_location']['description'] = esc_html__( 'Leave this blank if the location is not important.', 'listable' );
+
 
 
 	$fields['company']['main_image']['label']              = esc_html__( 'Upload Your Best Photo Of Your Food And Venu', 'listable' );

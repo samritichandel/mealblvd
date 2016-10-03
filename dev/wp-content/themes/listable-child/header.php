@@ -29,10 +29,10 @@ session_start();
 	$GLOBALS['upload_directory_path'] =$_SERVER['DOCUMENT_ROOT'].'/dev/wp-content/themes/listable-child/uploads/';
 	global $array_pages;
 	
-	$array_pages=array( 11193, 11117,68,6,11041);
-	$class=(is_page($array_pages))? 'no-bg':''; 
+	$array_pages=array( 11193, 11117,68,6,11041,11413);
+	$class=(is_page($array_pages) || is_404())? 'no-bg':''; 
 	$content_class=(is_page($array_pages))? ' inner_page_cntnt':''; 
-	$transparent= (is_page($array_pages))? ' ':' header--transparent'; 
+	$transparent= (is_page($array_pages)  || is_404())? ' ':' header--transparent'; 
 	
 	?>
 	<header id="masthead" class="site-header navbar-fixed-top <?php echo $class; ?> <?php if( listable_get_option( 'header_transparent', true ) == true) echo $transparent; ?>" role="banner">
@@ -40,7 +40,7 @@ session_start();
 		
 		
 		<?php 
-		if(is_page($array_pages))
+		if(is_page($array_pages) || is_404())
 		{
 			if ( function_exists( 'the_custom_logo' ) && has_custom_logo() ) {
 			// For transferring existing site logo from Jetpack -> Core

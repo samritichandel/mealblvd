@@ -21,10 +21,10 @@ get_header(); ?>
 				<h1 class="page-title">Chefs and Foodies together one meal</h1>
 				<span class="entry-subtitle">Find great places to eat and connect with great minds.</span>
 			</header>
+			<div class="single-meal-listing">
 			<div class="container">
 				<div class="add-menu-gallary">
 					<div class="slider-main">
-						<h2>Our Gallery</h2>
 						<nav class="single-categories-breadcrumb">
 						<a href="<?php echo listable_get_listings_page_url(); ?>"><?php esc_html_e( 'Listings', 'listable' ); ?></a> >>
 						<?php
@@ -47,6 +47,7 @@ get_header(); ?>
 							}
 						} ?>
 						</nav>
+						<h2>Our Gallery</h2>
 						<?php
 						if ( ! post_password_required() ) {
 							$photos = listable_get_listing_gallery_ids();
@@ -89,6 +90,8 @@ get_header(); ?>
 
 				<?php endif; ?>
 				</div>
+				</div>
+				
 				<div>
 					<?php
 					$job_manager = $GLOBALS['job_manager'];
@@ -114,7 +117,18 @@ get_header(); ?>
 						'after'  => '</div>',
 					) ); ?>
 				</div><!-- .entry-content -->
-
+				</div><!--container end-->
+				</div><!--job container end-->
+			   <div class="menu-listing">
+					<div class="container">
+						<?php dynamic_sidebar('listing_bottom_content');?>
+					</div>
+			   </div>
+			   <div class="reviews">
+					<div class="container">
+						<?php dynamic_sidebar('reviews');?>
+					</diV>
+			   </div>
 				<footer class="entry-footer">
 					<?php listable_entry_footer(); ?>
 				</footer><!-- .entry-footer -->
@@ -127,8 +141,7 @@ get_header(); ?>
 				echo get_the_password_form();
 				echo '</div>';
 			} ?>
-			</div>
-			</div>
+			
 		</article><!-- #post-## -->
 
 		<?php

@@ -58,7 +58,7 @@ function listable_register_widget_areas() {
 	register_widget( 'Listing_Actions_Widget' );
 	register_widget( 'Listing_Content_Widget' );
 	register_widget( 'Listing_Comments_Widget' );
-
+	register_widget( 'Listing_Menu_Widget' );
 
 	register_widget( 'Listing_Sidebar_Map_Widget' );
 	register_widget( 'Listing_Sidebar_Categories_Widget' );
@@ -191,6 +191,7 @@ class Listing_Content_Widget extends WP_Widget {
 
 	public function widget( $args, $instance ) {
 		global $post;
+		echo "<h3>Description</h3>";
 		echo $args['before_widget'];
 
 		//first let's filter the content in any way we might find suitable
@@ -218,7 +219,6 @@ class Listing_Content_Widget extends WP_Widget {
 			</div>
 
 		<?php endif;
-		
 
 		// if ( candidates_can_apply() ) {get_job_manager_template( 'job-application.php' ); }
 
@@ -265,6 +265,37 @@ class Listing_Comments_Widget extends WP_Widget {
 		echo '<p>' . $this->widget_options['description'] . '</p>';
 	}
 } // class Listing_Comments_Widget
+
+//Listing menu Widget
+
+class Listing_Menu_Widget extends WP_Widget {
+
+	function __construct() {
+		parent::__construct(
+			'listing_menu', // Base ID
+			'&#x1F536; ' . esc_html__( 'Listing', 'listable' ) . ' &raquo; ' . esc_html__( 'Meal Menus', 'listable' ), // Name
+			array( 'description' => esc_html__( 'Meal Menus', 'listable' ), ) // Args
+		);
+	}
+
+	public function widget( $args, $instance ) {
+		global $post;
+		$menu=get_post_meta($post->ID,'_menu',true);
+			if($menu)
+			{
+				echo $args['before_widget'];
+				echo $menu;
+				echo $args['after_widget'];
+			}
+	}
+
+	public function form( $instance ) {
+		echo '<p>' . $this->widget_options['description'] . '</p>';
+	}
+} // class Listing_Comments_Widget
+
+
+
 
 class Listing_Sidebar_Map_Widget extends WP_Widget {
 

@@ -80,6 +80,7 @@
 				add_user_meta( $user_id, 'questions', $questions );
 				add_user_meta($user_id,'simple_local_avatar',$_SESSION['img_url']);
 				add_user_meta($user_id,'pw_user_status','pending');
+				add_user_meta($user_id,'billing_phone',$phone);
 				if(isset($user_id))
 				{
 					$msg="Thanks for registration with us.Once your account is approved, your password will be emailed to you.";

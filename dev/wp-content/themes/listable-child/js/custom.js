@@ -98,11 +98,15 @@ jQuery('#registration').validate({
 	
 });
 
-//validation for post a meal
-//add method for select
+
+jQuery.validator.addClassRules("wp-editor-wrap", {
+  required: true
+});
+
 jQuery.validator.addMethod("valueNotEquals", function(value, element, arg){
   return arg != value;
  }, "Value must not equal arg.");
+
  jQuery("#submit-job-form").validate({
   rules: {
    meal_type: { valueNotEquals: 0 },
@@ -111,23 +115,29 @@ jQuery.validator.addMethod("valueNotEquals", function(value, element, arg){
    type_cuisine: { valueNotEquals: 0 },
    currency: { valueNotEquals: 0 },
    job_title: {required: true,maxlength: 10,},
-   price: {required: true,digits: true,maxlength: 5}
+   price: {required: true,digits: true,maxlength: 5},
+   job_location : {maxlength: 50},
+   company_phone :{maxlength: 20},
+   company_twitter: {maxlength: 50}
    },
   messages: {
-  meal_type: { valueNotEquals: "Please select a value" },
-  min_guest: { valueNotEquals: "Please select a value" },
-  max_guest: { valueNotEquals: "Please select a value" },
-  type_cuisine: { valueNotEquals: "Please select a value" },
-  currency: { valueNotEquals: "Please select a value" },
+  meal_type: { valueNotEquals: "" },
+  min_guest: { valueNotEquals: "" },
+  max_guest: { valueNotEquals: "" },
+  type_cuisine: { valueNotEquals: "" },
+  currency: { valueNotEquals: "" },
   job_title: {
-				required: "Please enter title",
-				maxlength: "Title should be less then 10 characters"
+				required: "",
+				maxlength: ""
 			},
 	price: {
-				required: "Please enter price ",
-				digits: "Please enter a valid price value",
-				maxlength: "Price should not be greater then 5 digits"}
-  }  
+				required: "",
+				digits: "",
+				maxlength: ""}
+  } ,
+  job_location : {maxlength: ""},
+  company_phone: {maxlength: ""},
+  company_twitter: {maxlength: ""}
  });
 
 

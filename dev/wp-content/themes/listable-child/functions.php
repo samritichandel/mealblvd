@@ -79,6 +79,27 @@ register_sidebar( array(
 		'before_title'  => '<p>',
 		'after_title'   => '</p>',
 	) );
+	
+//custom widgte for listing menus
+register_sidebar( array(
+		'name'          => __( 'Listing Menu Content'),
+		'id'            => 'listing_bottom_content',
+		'before_widget' => '',
+		'after_widget'  => '',
+		'before_title'  => '',
+		'after_title'   => '',
+	) );
+
+//custom widgte reviews
+register_sidebar( array(
+		'name'          => __( 'Listing Reviews'),
+		'id'            => 'reviews',
+		'before_widget' => '',
+		'after_widget'  => '',
+		'before_title'  => '',
+		'after_title'   => '',
+	) );
+	
 
 //overrride the fronend widgets
 require_once dirname( __FILE__ ) . '/includes/overridden_widgets.php';

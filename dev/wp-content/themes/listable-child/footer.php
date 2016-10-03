@@ -95,6 +95,22 @@
                 , slideshow: false
                 , sync: "#carousel"
             });
+			jQuery('#carouselpreview').flexslider({
+                animation: "slide"
+                , controlNav: false
+                , animationLoop: false
+                , slideshow: false
+                , itemWidth: 147
+                , itemMargin: 20
+                , asNavFor: '#slider'
+            });
+           jQuery('#sliderpreview').flexslider({
+                animation: "slide"
+                , controlNav: false
+                , animationLoop: false
+                , slideshow: false
+                , sync: "#carouselpreview"
+            });
         });
     </script> 
 <?php wp_footer(); ?>

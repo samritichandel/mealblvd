@@ -26,17 +26,74 @@ if ( ! is_wp_error( $terms ) && ( is_array( $terms ) || is_object( $terms ) ) ) 
 			$count++;
 		}
 	}
-}
-
-$listing_is_claimed = false;
-if ( class_exists( 'WP_Job_Manager_Claim_Listing' ) ) {
-	$classes = WP_Job_Manager_Claim_Listing()->listing->add_post_class( array(), '', $post->ID );
-
-	if ( isset( $classes[0] ) && ! empty( $classes[0] ) ) {
-		if ( $classes[0] == 'claimed' )
-			$listing_is_claimed = true;
-	}
 } ?>
+
+<div class="container">
+<div class="add-menu-gallary">
+<div class="slider-main">
+<nav class="single-categories-breadcrumb">
+<a href="<?php echo get_post_type_archive_link( 'job_listing' ) ?>"><?php esc_html_e( 'Listings', 'listable' ); ?></a> >>
+<?php
+$term_list = wp_get_post_terms(
+$post->ID,
+'job_listing_category',
+array(
+	"fields" => "all",
+	'orderby' => 'parent',
+)
+);
+
+if ( ! empty( $term_list ) && ! is_wp_error( $term_list ) ) {
+// @TODO make them order by parents
+foreach ( $term_list as $key => $term ) {
+	echo '<a href="' . esc_url( get_term_link( $term ) ) . '">' . $term->name . '</a>';
+	if ( count( $term_list ) - 1 !== $key ) {
+		echo ' >>';
+	}
+}
+} ?>
+</nav>
+<h2>Our Gallery</h2>
+
+<?php
+//get the listing gallery
+$photos = listable_get_listing_gallery_ids();?>
+<div class="entry-featured-carousel">
+<?php
+if (empty( $photos ) ) :?>
+<div class="entry-cover-image" style="background-image: url(<?php echo site_ur();?>/wp-content/uploads/2015/11/14_listable_demo.jpg);"></div>
+<?php endif;
+if ( ! empty( $photos ) ) : ?>
+<?php if ( count( $photos ) == 1 ):
+			$myphoto = $photos[0];
+			$image = wp_get_attachment_image_src( $myphoto, 'listable-featured-image' );
+			$src = $image[0]; ?>
+			<div class="entry-cover-image" style="background-image: url(<?php echo listable_get_inline_background_image( $src ); ?>);"></div>
+		<?php else: ?>
+			<div id="sliderpreview" class="flexslider">
+			<ul class="slides">
+			 <?php
+			foreach ($photos as $key => $photo_id):
+			$src = wp_get_attachment_image_src($photo_id, 'listable-carousel-image'); ?>
+			<li><img class="img-responsive" src="<?php echo $src[0]; ?>" itemprop="image" /></li>
+			<?php endforeach;?>
+			</ul>
+		</div>
+		<div id="carouselpreview" class="flexslider">
+			<ul class="slides">
+			<?php
+			foreach ($photos as $key => $photo_id):
+			$src = wp_get_attachment_image_src($photo_id, 'listable-carousel-image'); ?>
+			<li><img class="img-responsive" src="<?php echo $src[0]; ?>" itemprop="image" /></li>
+			<?php endforeach;?>
+			
+			</ul>
+		</div>
+		<?php endif; ?>
+	<?php endif; ?>
+</div>
+</div>
+
 
 <div class="single_job_listing"
 	data-latitude="<?php echo get_post_meta($post->ID, 'geolocation_lat', true); ?>"
@@ -48,16 +105,11 @@ if ( class_exists( 'WP_Job_Manager_Claim_Listing' ) ) {
 		<div class="job-manager-info"><?php esc_html_e( 'This listing has expired.', 'listable' ); ?></div>
 	<?php else : ?>
 		<div class="grid">
-			<div class="grid__item  column-content  entry-content">
+			<div class="grid__item  column-content">
 				<header class="entry-header">
-					<h1 class="entry-title" itemprop="name"><?php
-						echo get_the_title();
-						if ( $listing_is_claimed ) :
-							echo '<span class="listing-claimed-icon">';
-							get_template_part('assets/svg/checked-icon');
-							echo '<span>';
-						endif;
-					?></h1>
+					
+
+					<?php the_title( '<h1 class="entry-title" itemprop="name">', '</h1>' ); ?>
 					<?php the_company_tagline( '<span class="entry-subtitle" itemprop="description">', '</span>' ); ?>
 
 					<?php
@@ -92,6 +144,7 @@ if ( class_exists( 'WP_Job_Manager_Claim_Listing' ) ) {
 
 			</div><!-- / .column-2 -->
 		</div>
-		
 	<?php endif; ?>
+</div>
+</div>
 </div>
