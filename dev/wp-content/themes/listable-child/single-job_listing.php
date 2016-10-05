@@ -121,12 +121,17 @@ get_header(); ?>
 				</div><!--job container end-->
 			   <div class="menu-listing">
 					<div class="container">
+						<h2>Menu</h2>
 						<?php dynamic_sidebar('listing_bottom_content');?>
 					</div>
 			   </div>
 			   <div class="reviews">
 					<div class="container">
+						<div class="row">
+							<div class="col-md-7">
 						<?php dynamic_sidebar('reviews');?>
+							</diV>
+						</diV>
 					</diV>
 			   </div>
 				<footer class="entry-footer">
@@ -145,8 +150,12 @@ get_header(); ?>
 		</article><!-- #post-## -->
 
 		<?php
-		if ( ! post_password_required() ) the_post_navigation();
-	endwhile; // End of the loop. ?>
+		if ( ! post_password_required() ) {
+			echo '<div class="container meal-navigation">'; 
+			the_post_navigation() ;
+			echo '</div>'; 
+			}
+		endwhile; // End of the loop. ?>
 	</main><!-- #main -->
 </div><!-- #primary -->
 
