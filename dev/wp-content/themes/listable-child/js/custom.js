@@ -1,8 +1,6 @@
-//add and remove class on scroll
+
 jQuery(function() {
-
-
-    //caches a jQuery object containing the header element
+//add and remove class on scroll
     var header = jQuery(".site-header");
     jQuery(window).scroll(function() {
         var scroll = jQuery(window).scrollTop();
@@ -14,6 +12,7 @@ jQuery(function() {
         }
     });
 	
+	//ajax for getting user email
 	jQuery("#user_email").blur(function(){
         var email=jQuery(this).val();
 		jQuery.ajax({
@@ -98,7 +97,7 @@ jQuery('#registration').validate({
 	
 });
 
-
+//add method for select validation
 jQuery.validator.addClassRules("wp-editor-wrap", {
   required: true
 });
@@ -114,9 +113,9 @@ jQuery.validator.addMethod("valueNotEquals", function(value, element, arg){
    max_guest: { valueNotEquals: 0 },
    type_cuisine: { valueNotEquals: 0 },
    currency: { valueNotEquals: 0 },
-   job_title: {required: true,maxlength: 10,},
+   job_title: {required: true,maxlength: 100,},
    price: {required: true,digits: true,maxlength: 5},
-   job_location : {maxlength: 50},
+   job_location : {maxlength: 200},
    company_phone :{maxlength: 20},
    company_twitter: {maxlength: 50}
    },
@@ -141,6 +140,27 @@ jQuery.validator.addMethod("valueNotEquals", function(value, element, arg){
  });
 
 
+ //jQuery for load more dasboard comments
+ size_li = jQuery(".dash-review-main>ul>li").size();
+ if(size_li >= 2)
+ {
+	x=2;
+   jQuery('.dash-review-main>ul>li:lt('+x+')').show();
+   jQuery('#review_btn').click(function () {
+	    x= (x+5 <= size_li) ? x+5 : size_li;
+		jQuery('.dash-review-main>ul>li:lt('+x+')').show();
+		new_size=size_li-x;
+		if(new_size > 0)
+		{
+			jQuery('#review_btn').html(new_size + ' More...');
+		}
+		 else 
+		 {
+			jQuery('#review_btn').hide();
+		 }
+    });
+}
+  
 	
 });
 
@@ -148,6 +168,8 @@ jQuery.validator.addMethod("valueNotEquals", function(value, element, arg){
 jQuery('.link-host-btn').click(function(){
 window.location.href=window.location.host;
 });
+
+
 
 
 

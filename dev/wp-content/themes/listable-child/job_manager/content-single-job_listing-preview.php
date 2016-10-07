@@ -70,7 +70,7 @@ if ( ! empty( $photos ) ) : ?>
 			$src = $image[0]; ?>
 			<div class="entry-cover-image" style="background-image: url(<?php echo listable_get_inline_background_image( $src ); ?>);"></div>
 		<?php else: ?>
-			<div id="sliderpreview" class="flexslider">
+			<div id="slider" class="flexslider">
 			<ul class="slides">
 			 <?php
 			foreach ($photos as $key => $photo_id):
@@ -79,7 +79,7 @@ if ( ! empty( $photos ) ) : ?>
 			<?php endforeach;?>
 			</ul>
 		</div>
-		<div id="carouselpreview" class="flexslider">
+		<div id="carousel" class="flexslider">
 			<ul class="slides">
 			<?php
 			foreach ($photos as $key => $photo_id):
@@ -148,3 +148,15 @@ if ( ! empty( $photos ) ) : ?>
 </div>
 </div>
 </div>
+<div class="menu-listing">
+<div class="container">
+	<?php	
+		global $post;
+		$menu=get_post_meta($post->ID,'_menu',true);
+		if($menu){?>
+		<h2>Menu</h2>
+		<?php } ?>
+	<?php dynamic_sidebar('listing_bottom_content');?>
+</div>
+</div>
+

@@ -22,7 +22,9 @@ get_header(); ?>
                         </div>
                         
                         <div class="section3-das-box-center">
-						<?php $img=get_user_meta($user->ID,'simple_local_avatar',true); 
+						<?php 
+							//get img of user
+							$img=get_user_meta($user->ID,'simple_local_avatar',true); 
 							$img_url="";
 							if(isset($img[150]))
 							{
@@ -83,7 +85,7 @@ get_header(); ?>
         </div>
 </section>
 		<?php
-		//get posts of a user
+		//get posts of a user for job listing post type
 		global $current_user;                     
 		$args = array(
 		  'author'        =>  $user->ID, 
@@ -96,7 +98,7 @@ get_header(); ?>
 		
 		$current_user_posts = get_posts( $args );
 		
-		//get id of posts
+		//store id of posst in an array
 		$posts_id_array=array();
 		foreach($current_user_posts as $post)
 		{
@@ -135,6 +137,7 @@ get_header(); ?>
                       <div class="review-color">
                           <p>
 							<?php
+							//if comments are there
 							if(!empty ($all_comments))
 							{
 							$argms = array(
@@ -143,8 +146,9 @@ get_header(); ?>
 							'post_type' => 'job_listing',
 							'count' =>true
 							);
-							$comments = get_comments($argms);
-							echo $comments .'review';
+							$GLOBALS['comments'] = get_comments($argms);
+							$review_text=($comments ==1)?' review': ' reviews';
+							echo $comments .$review_text;
 							}
 							else
 								echo "No review";
@@ -171,11 +175,16 @@ get_header(); ?>
 					 if($user_id != 0)
 					 {
 						$image=get_user_meta($user_id,'simple_local_avatar');
-						echo '<pre>';
-						print_r($image);
-						echo '</pre>';
+						if(isset($image[0][150]))
+						{
+								$imguri=$image[0][150];
+						}
+						else
+						{
+							$imguri=$image[0]['full'];
+						}
 						?>
-						<img class="img-responsive" alt="user-2" src="<?php $img['full']; ?>">
+					<img class="img-responsive" alt="user-2" src="<?php echo $imguri?>">
 						<?php
 					 }
 					 else
@@ -224,8 +233,10 @@ get_header(); ?>
 			  <?php } //end foreach 
 			  }  //endif?>
               </ul>
-              
-              <button type="button" class="review-btn">22 More...</button>
+				
+			<?php if($comments > 2) {?>	
+				<button type="button" id="review_btn" class="review-btn"><?php echo $comments - 2  ;?> More...</button>
+			<?php }?>
               
               </div>
           </div>

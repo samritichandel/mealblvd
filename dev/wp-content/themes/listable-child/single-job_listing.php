@@ -121,7 +121,14 @@ get_header(); ?>
 				</div><!--job container end-->
 			   <div class="menu-listing">
 					<div class="container">
-						<h2>Menu</h2>
+						<?php	
+							global $post;
+							$menu=get_post_meta($post->ID,'_menu',true);
+							if($menu){?>
+							<h2>Menu</h2>
+							<?php } ?>
+							
+						
 						<?php dynamic_sidebar('listing_bottom_content');?>
 					</div>
 			   </div>

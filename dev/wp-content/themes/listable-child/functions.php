@@ -126,7 +126,7 @@ function faqs() {
 	  )
     )
   );
-       // register_taxonomy( 'faq', 'faqs',array('label' => __( "Categories" ),'show_ui' => true,'show_admin_column' => true,'rewrite' => false ,'hierarchical' => true, ) );
+       
 }
 
 //shortcode for FAQ's page
@@ -135,7 +135,7 @@ function faq()
 $data = "";
 ob_start();
 $args=array(
-'post_type'=> 'faqs' //'Blog' is the name of the post whose content we want to get.
+'post_type'=> 'faqs'
 );
 $the_query=new WP_Query( $args );
 ?>
@@ -313,6 +313,11 @@ function shapeSpace_add_settings_errors() {
 	 settings_errors();
 }
 add_action('admin_notices', 'shapeSpace_add_settings_errors');
+
+function load_more_comments()
+{
+	
+}
 
 require_once dirname( __FILE__ ) . '/includes/meal_settings.php';
 
