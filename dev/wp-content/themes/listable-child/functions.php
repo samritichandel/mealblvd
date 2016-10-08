@@ -126,7 +126,7 @@ function faqs() {
 	  )
     )
   );
-       
+       // register_taxonomy( 'faq', 'faqs',array('label' => __( "Categories" ),'show_ui' => true,'show_admin_column' => true,'rewrite' => false ,'hierarchical' => true, ) );
 }
 
 //shortcode for FAQ's page
@@ -135,7 +135,7 @@ function faq()
 $data = "";
 ob_start();
 $args=array(
-'post_type'=> 'faqs'
+'post_type'=> 'faqs' //'Blog' is the name of the post whose content we want to get.
 );
 $the_query=new WP_Query( $args );
 ?>
@@ -314,11 +314,6 @@ function shapeSpace_add_settings_errors() {
 }
 add_action('admin_notices', 'shapeSpace_add_settings_errors');
 
-function load_more_comments()
-{
-	
-}
-
 require_once dirname( __FILE__ ) . '/includes/meal_settings.php';
 
 //ajax function for image upload
@@ -329,3 +324,21 @@ add_action( 'wp_ajax_nopriv_get_image_url', 'get_image_url' );
 
 //add custom meta box to show minimum number of guest value
 require_once dirname( __FILE__ ) . '/includes/metaboxes.php';
+
+//ajax funtion for fetching the password
+add_action( 'wp_ajax_get_password', 'get_password' );    
+add_action( 'wp_ajax_nopriv_get_password', 'get_password' ); 
+function get_password()
+{
+	$html="";
+	$email=$_POST['email'];
+	$pass=$_POST['pass'];
+	$user = get_user_by( 'email', $email );
+	$old_pass=$user->data->user_pass;
+	if ( wp_check_password( $pass, $user->data->user_pass, $user->ID) )
+		$html="matched";
+	else
+		$html="Not matched";
+	echo $html;
+	exit();
+}

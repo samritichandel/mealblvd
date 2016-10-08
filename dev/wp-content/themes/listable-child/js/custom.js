@@ -97,6 +97,83 @@ jQuery('#registration').validate({
 	
 });
 
+//validation for user profile page
+jQuery('#user_profile').validate({
+	rules: {
+		fname:{required: true},
+		lname:{required: true},
+		phone:
+		{
+			required: true,
+			digits: true,
+			maxlength: 12		 
+		},
+		user_email:
+		{
+			required: true,
+			email: true		 
+		},
+		
+		new_password: 
+		{
+			minlength: 8	
+		},
+		confirm_password:
+		{
+			minlength: 8,
+			equalTo : "#new_password"
+		}
+	},
+	messages:
+	{
+		fname: { required:  "Please enter your first name"},
+		lname: {required : "Please enter your last name"},
+		phone: {
+				required: "Please enter a phone number",
+				digits: "Please enter a valid number",
+				maxlength: "Please enter a valid number"
+			   },
+		new_password: {
+				minlength: "Your password should be atleat 8 characters long"
+				},
+		confirm_password:
+		{
+			minlength:"Your password should be atleat 8 characters long",
+			equalTo : "Password does not match"
+		}		
+	}
+	
+	
+});
+
+//ajax method to check password and email
+jQuery("#password").blur(function(){
+        var pass=jQuery(this).val();
+		var email=jQuery('#user_email').val();
+		jQuery.ajax({
+			type:"post",
+			datatype: "html",
+			url : ajaxurl,
+			data :{ 'action':'get_password','email': email, 'pass':pass},
+		    success : function(response)
+            {
+				if(response === "Not matched")
+				{
+					jQuery('#password').addClass('error');
+					jQuery('#pass_check').remove();
+					jQuery('#password').after('<label class="error" id="pass_check">Provided password is incorrect</label>');
+					jQuery('input[name="submit_dash_profile"]').prop('disabled', true);
+				}
+				if(response === 'matched')
+				{
+					jQuery('#password').removeClass('error').addClass('valid');
+					jQuery('#pass_check').remove();
+					jQuery('input[name="submit_dash_profile"]').prop('disabled', false);
+				}
+			}
+		});
+});
+
 //add method for select validation
 jQuery.validator.addClassRules("wp-editor-wrap", {
   required: true
@@ -142,9 +219,7 @@ jQuery.validator.addMethod("valueNotEquals", function(value, element, arg){
 
  //jQuery for load more dasboard comments
  size_li = jQuery(".dash-review-main>ul>li").size();
- if(size_li >= 2)
- {
-	x=2;
+  x=2;
    jQuery('.dash-review-main>ul>li:lt('+x+')').show();
    jQuery('#review_btn').click(function () {
 	    x= (x+5 <= size_li) ? x+5 : size_li;
@@ -159,7 +234,6 @@ jQuery.validator.addMethod("valueNotEquals", function(value, element, arg){
 			jQuery('#review_btn').hide();
 		 }
     });
-}
   
 	
 });

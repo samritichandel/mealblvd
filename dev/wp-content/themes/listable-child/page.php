@@ -19,7 +19,7 @@ get_header(); ?>
 		<?php while ( have_posts() ) : the_post();
 
 			do_action( 'listable_before_page_content' );
-			
+			//if registration page then
 			if(is_page(11279))
 				get_template_part( 'template-parts/content', 'registration' );
 			else

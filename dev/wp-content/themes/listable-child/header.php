@@ -27,20 +27,23 @@ session_start();
 	<a class="skip-link screen-reader-text" href="#content"><?php esc_html_e( 'Skip to content', 'listable' ); ?></a>
 	<?php
 	$GLOBALS['upload_directory_path'] =$_SERVER['DOCUMENT_ROOT'].'/dev/wp-content/themes/listable-child/uploads/';
-	global $array_pages;
+	$id=get_the_ID();
+	$no_bg=get_field('no_background',$id);
+	if(is_array($no_bg) && $no_bg[0] == 'yes')
+		$no_background= true;
+	//global $array_pages;
 	
-	$array_pages=array( 11193, 11117,68,6,11041,11413);
-	$class=(is_page($array_pages) || is_404())? 'no-bg':''; 
-	$content_class=(is_page($array_pages))? ' inner_page_cntnt':''; 
-	$transparent= (is_page($array_pages)  || is_404())? ' ':' header--transparent'; 
+	//id of the pages have no background in header
+	//$array_pages=array( 11193, 11117,68,6,11041,11413,11451,11467);
+	$class=($no_background === true || is_404())? 'no-bg':''; 
+	$content_class=($no_background === true)? ' inner_page_cntnt':''; 
+	$transparent= ($no_background === true  || is_404())? ' ':' header--transparent'; 
 	
 	?>
 	<header id="masthead" class="site-header navbar-fixed-top <?php echo $class; ?> <?php if( listable_get_option( 'header_transparent', true ) == true) echo $transparent; ?>" role="banner">
 		<div class="container">
-		
-		
 		<?php 
-		if(is_page($array_pages) || is_404())
+		if($no_background === true || is_404())
 		{
 			if ( function_exists( 'the_custom_logo' ) && has_custom_logo() ) {
 			// For transferring existing site logo from Jetpack -> Core
@@ -84,17 +87,41 @@ session_start();
 				'fallback_cb' => false,
 				'walker' => new Listable_Walker_Nav_Menu(),
 			) );
-			wp_nav_menu( array(
+
+			/*wp_nav_menu( array(
 				'container_class' => 'secondary-menu-wrapper',
 				'theme_location' => 'secondary',
 				'menu_class' => 'primary-menu secondary-menu',
 				'fallback_cb' => false,
 				'walker' => new Listable_Walker_Nav_Menu(),
-			) ); ?>
+			) ); */?>
 
 		</nav>
 		<?php endif; ?>
 		</div>
 	</header><!-- #masthead -->
-
+	
+<?php
+$dashboard=get_field('user_dashboard_page',$id);
+if(is_array($dashboard) && $dashboard[0] == 'yes' && is_user_logged_in())
+{
+	?>
+<div class="sub-menu">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-11 col-md-offset-1">
+	<?php 
+		wp_nav_menu( array(
+				'container' => false,
+				'theme_location' => 'secondary',
+				'menu_class' => 'nav nav-pills',
+				'fallback_cb' => false,
+				'walker' => new Listable_Walker_Nav_Menu(),
+			) ); 
+	?>
+			</div>
+		</div>
+	</div>
+</div>
+<?php } ?>
 	<div id="content" class="site-content<?php echo $content_class;?>">

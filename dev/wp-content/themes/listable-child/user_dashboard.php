@@ -4,17 +4,20 @@
  */
 
 get_header(); ?>
+
 <div id="primary" class="content-area">
 	<main id="main" class="site-main" role="main">
+	<?php 
+		if(is_user_logged_in())
+		{
+		?>
 	<section class="section3-dashboard">
         <div class="container">
             <div class="row">
                 <div class="col-md-10 col-md-offset-1">
             <div class="section3-dash">
                 <ul>
-				<?php if(is_user_logged_in()){
-						$user= wp_get_current_user();
-						} ?>
+				<?php $user= wp_get_current_user();?>
 					 <li>
                         <div class="section3-das-box-heading">
 							<h2>Hello <?php echo $user->data->display_name; ?></h2>
@@ -245,11 +248,23 @@ get_header(); ?>
       </div>
 	  </div>
 </section>  
-
+		<?php
+		}
+		else
+		{
+		?>
+		<header class="page-header">
+			<h1 class="page-title"><?php the_title()?></h1>
+		</header>
+		<div class="container">
+			<div class="message_login">You need to login first</div>
+		</div>
+	<?php
+		}
+	?>
 		
 	</main><!-- #main -->
 </div><!-- #primary -->
 <?php
-get_sidebar();
 get_footer();
 

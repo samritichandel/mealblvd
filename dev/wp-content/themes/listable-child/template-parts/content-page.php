@@ -8,8 +8,12 @@
  */
 
 ?>
+
 <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 	<?php 
+	//fetch dashboard page
+	$dashboard_page=get_field('user_dashboard_page',$post->ID);
+	//page id 8 listings page http://mealblvd.com/dev/listings/
 	if($post->ID==8)
 	{
 		if ( has_post_thumbnail() ):
@@ -33,6 +37,9 @@
 			</header>
 		<?php else:
 			if ( !is_page_template( 'page-templates/full_width_no_title.php' ) ) { ?>
+			<?php 
+			//show title page if user is not logged in or it is not dashboard page
+			if(empty($dashboard_page)) {?>
 			<header class="page-header">
 				<h1 class="page-title"><?php the_title(); ?></h1>
 
@@ -41,18 +48,27 @@
 				<?php endif; ?>
 
 			</header>
+			<?php }
+			else
+			{
+				if(is_user_logged_in() === false)
+					{
+					?>
+					<header class="page-header">
+						<h1 class="page-title"><?php the_title(); ?></h1>
+					</header>
+				<?php
+					}
+			}
+			?>
 		<?php }
 		endif; ?>
 	<?php endif; ?>
-	<?php 
-	//pages having dashboard option
-	$user_dash_pages=array(6,11041);
-	$show=(in_array($post->ID,$user_dash_pages))?true:false;
-	?>
+
 	<div class="entry-content" id="entry-content-anchor">
 	<div class="container<?php if($show) echo ' listing_cust';?>">
 		<?php
-			if($show)
+			if($dashboard_page)
 			{
 				if ( is_user_logged_in() ) 
 				{
