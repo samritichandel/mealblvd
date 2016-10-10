@@ -2,53 +2,58 @@
 /**
  * Template Name: Dashboard Profile
  */
-
-get_header(); ?>
+session_start();
+		$msg="";
+		//fetch the global variable
+		$upload_directory_path=$GLOBALS['upload_directory_path'];
+		if(isset($_POST['submit_dash_profile']))
+		 {
+			 $fname=$_POST['fname'];
+			 $lname=$_POST['lname'];
+			 $phone=$_POST['phone'];
+			 $email=$_POST['user_email_profile'];
+			 $pass=$_POST['new_password'];
+			 $uid=$_POST['user_id'];
+			 
+			$userdata = array(
+			'ID' => $uid,
+			'user_login'  =>   $email,
+			'first_name'    =>  $fname,
+			'last_name'    =>  $lname,
+			'user_email'   =>  $email,
+			'user_pass' => $pass,
+			'display_name' => $fname. ' '.$lname  
+			);
+			$user_id =wp_update_user( $userdata ) ;
+			if(isset($_SESSION['img_url_new']))
+			{
+				update_user_meta($uid,'simple_local_avatar',$_SESSION['img_url_new']);
+			}
+			update_user_meta($uid,'billing_phone',$phone);
+			if ( is_wp_error( $user_id ) ) {
+					$msg= 'There was an error,saving your data';
+			} else {
+					$msg="Your data has been updated";
+					}	
+		 }
+		get_header(); 
+?>
 <div id="primary" class="content-area">
 	<main id="main" class="site-main" role="main">
 	<?php 
 		if(is_user_logged_in())
 		{
+			 $user= wp_get_current_user();
 		?>
-		<div class="entry-content reg_sec" id="entry-content-anchor">
+	<div class="entry-content reg_sec" id="entry-content-anchor">
 	<div class="container">
-		<?php
-			$msg="";
-			//fetch the global variable
-			$upload_directory_path=$GLOBALS['upload_directory_path'];
-			if(isset($_POST['submit_dash_profile']))
-			 {
-				 $fname=$_POST['fname'];
-				 $lname=$_POST['lname'];
-				 $phone=$_POST['phone'];
-				 $email=$_POST['user_email'];
-				 $pass=$_POST['password'];
-				 
-				 $userdata = array(
-				'user_login'  =>   $email,
-				'first_name'    =>  $fname,
-				'last_name'    =>  $lname,
-				'user_email'   =>  $email,
-				);
-
-				$user_id = wp_update_user( $userdata ) ;
-				update_user_meta( $user_id, $meta_key, $meta_value, $prev_value );
-				update_user_meta($user_id,'simple_local_avatar',$_SESSION['img_url_new']);
-				update_user_meta($user_id,'billing_phone',$phone);
-				if(isset($user_id))
-				{
-					$msg="Your data is updated";
-				}
-			 }
-			 
-		?>
+		
 		
 		<!--user registeration form-->
 		<div class="col-md-10 col-md-offset-1">
 		<?php if(isset($msg) && $msg != "") {?>
 		<div class="message"><?php  echo $msg; ?></div>
 		<?php }
-				 $user= wp_get_current_user();
 				 $fn=get_user_meta($user->ID,'first_name',true); 
 				 $ln=get_user_meta($user->ID,'last_name',true); 
 				 $ph=get_user_meta($user->ID,'billing_phone',true); 
@@ -141,7 +146,7 @@ get_header(); ?>
                 
 					<div class="form-group profile-full">
                       <label for="email">Email Address</label>
-                      <input type="email" id="user_email" name="user_email" class="form-control" value="<?=$ema;?>">
+                      <input type="email" id="user_email_profile" name="user_email_profile" class="form-control" value="<?=$ema;?>">
                     </div>  
 
 					<div class="form-group profile-pwd">
@@ -158,8 +163,10 @@ get_header(); ?>
                       <label for="email">Confirm New Password</label>
 					 <input name="confirm_password" type="password" id="confirm_password">
 					</div>
+					<input type="hidden" name="user_id" value="<?php echo $user->ID  ?>">
+                 <input type="submit" value="Save Changes" class="profile-form-btn" name="submit_dash_profile">
                 
-                <input type="submit" value="Save Changes" class="profile-form-btn" name="submit_dash_profile">
+                
             </form>
         </div>
 		

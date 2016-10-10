@@ -75,12 +75,12 @@ jQuery('#registration').validate({
 	},
 	messages:
 	{
-		fname: { required:  "Please enter your first name"},
-		lname: {required : "Please enter your last name"},
+		fname: { required:  "Please enter your first name."},
+		lname: {required : "Please enter your last name."},
 		phone: {
-				required: "Please enter a phone number",
-				digits: "Please enter a valid number",
-				maxlength: "Please enter a valid number"
+				required: "Please enter a phone number.",
+				digits: "Please enter a valid number.",
+				maxlength: "Please enter a valid number."
 			   },
 		/*password: {
 				required: "Please provide a password",
@@ -108,7 +108,7 @@ jQuery('#user_profile').validate({
 			digits: true,
 			maxlength: 12		 
 		},
-		user_email:
+		user_email_profile:
 		{
 			required: true,
 			email: true		 
@@ -126,54 +126,114 @@ jQuery('#user_profile').validate({
 	},
 	messages:
 	{
-		fname: { required:  "Please enter your first name"},
-		lname: {required : "Please enter your last name"},
+		fname: { required:  "Please enter your first name."},
+		lname: {required : "Please enter your last name."},
 		phone: {
-				required: "Please enter a phone number",
-				digits: "Please enter a valid number",
-				maxlength: "Please enter a valid number"
+				required: "Please enter a phone number.",
+				digits: "Please enter a valid number.",
+				maxlength: "Please enter a valid number."
 			   },
 		new_password: {
-				minlength: "Your password should be atleat 8 characters long"
+				minlength: "Your password should be atleat 8 characters long."
 				},
 		confirm_password:
 		{
-			minlength:"Your password should be atleat 8 characters long",
-			equalTo : "Password does not match"
+			minlength:"Your password should be atleat 8 characters long.",
+			equalTo : "Password does not match."
 		}		
 	}
 	
 	
 });
 
-//ajax method to check password and email
-jQuery("#password").blur(function(){
-        var pass=jQuery(this).val();
-		var email=jQuery('#user_email').val();
+//validating the current password using ajax
+var typingTimer;                //timer identifier
+var doneTypingInterval = 1000;  //time in ms (5 seconds)
+
+//on keyup, start the countdown
+jQuery('#password').keyup(function(){
+    clearTimeout(typingTimer);
+    if (jQuery('#password').val()) {
+        typingTimer = setTimeout(doneTyping, doneTypingInterval);
+    }
+});
+
+
+function doneTyping () 
+{
+var pass=jQuery('#password').val();
+var email=jQuery('#user_email_profile').val();
+jQuery.ajax({
+	type:"post",
+	datatype: "html",
+	url : ajaxurl,
+	data :{ 'action':'get_password','email': email, 'pass':pass},
+	success : function(response)
+	{
+		if(response === "Not matched")
+		{
+			jQuery('#password').addClass('error');
+			jQuery('#pass_check').remove();
+			jQuery('#password').after('<label class="error" id="pass_check">Provided password is incorrect.</label>');
+			jQuery('input[name="submit_dash_profile"]').prop('disabled', true);
+		}
+		if(response === 'matched')
+		{
+			jQuery('#password').removeClass('error').addClass('valid');
+			jQuery('#pass_check').remove();
+			jQuery('input[name="submit_dash_profile"]').prop('disabled', false);
+		}
+	}
+});
+}
+
+//validating the email if user changes it
+jQuery('#user_email_profile').keyup(function(){
+    clearTimeout(typingTimer);
+    if (jQuery('#user_email_profile').val()) {
+        typingTimer = setTimeout(doneTypingEmail, doneTypingInterval);
+    }
+});
+function doneTypingEmail()
+{
+	var email=jQuery('#user_email_profile').val();
 		jQuery.ajax({
 			type:"post",
 			datatype: "html",
 			url : ajaxurl,
-			data :{ 'action':'get_password','email': email, 'pass':pass},
+			data :{ 'action':'get_email_address','email': email},
 		    success : function(response)
             {
-				if(response === "Not matched")
+				if(response != "" || response != null)
 				{
-					jQuery('#password').addClass('error');
-					jQuery('#pass_check').remove();
-					jQuery('#password').after('<label class="error" id="pass_check">Provided password is incorrect</label>');
+					jQuery('#user_email_profile').removeClass('valid').addClass('error');
+					jQuery('#email_profile').remove();
+					jQuery('#user_email_profile').after('<label class="error" id="email_profile">'+response+'</label>');
 					jQuery('input[name="submit_dash_profile"]').prop('disabled', true);
 				}
-				if(response === 'matched')
+				if(!response)
 				{
-					jQuery('#password').removeClass('error').addClass('valid');
-					jQuery('#pass_check').remove();
+					jQuery('#user_email_profile').removeClass('error').addClass('valid');
+					jQuery('#email_profile').remove();
 					jQuery('input[name="submit_dash_profile"]').prop('disabled', false);
 				}
 			}
 		});
-});
+}
 
+//allow alphabets only
+jQuery('#fname,#lname').keydown(function (e) {
+	if (e.shiftKey || e.ctrlKey || e.altKey) {
+	e.preventDefault();
+	} else {
+	var key = e.keyCode;
+	if (!((key == 8) || (key == 32) || (key == 46) || (key >= 35 && key <= 40) || (key >= 65 && key <= 90))) {
+	e.preventDefault();
+	}
+	}
+	});
+	
+//post a meal validation
 //add method for select validation
 jQuery.validator.addClassRules("wp-editor-wrap", {
   required: true
@@ -182,6 +242,7 @@ jQuery.validator.addClassRules("wp-editor-wrap", {
 jQuery.validator.addMethod("valueNotEquals", function(value, element, arg){
   return arg != value;
  }, "Value must not equal arg.");
+
 
  jQuery("#submit-job-form").validate({
   rules: {

@@ -301,7 +301,7 @@ function get_email_address()
 	$email=$_POST['email'];
 	$user = get_user_by( 'email', $email );
 	if($user)
-		$html="Email address already exists";
+		$html="Email is already registered.";
 	else
 		$html=false;
 	echo $html;
@@ -342,3 +342,4 @@ function get_password()
 	echo $html;
 	exit();
 }
+

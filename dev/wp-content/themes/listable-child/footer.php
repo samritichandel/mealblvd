@@ -114,6 +114,19 @@
         });
     </script> 
 <?php wp_footer(); ?>
+<script>
+jQuery(document).ready(function(){
 
+			jQuery('#availableDates').on('change', function() {
+				var selectedDate = jQuery(this).val()
+				var selectedDateBreakdown = selectedDate.split("-"); 
+
+				jQuery( "input[name*='wc_bookings_field_start_date_day']" ).val( selectedDateBreakdown[0] );
+				jQuery( "input[name*='wc_bookings_field_start_date_month']" ).val( selectedDateBreakdown[1] );
+				jQuery( "input[name*='wc_bookings_field_start_date_year']" ).val( selectedDateBreakdown[2] );
+			});
+
+    });  /* END DOCUMENT READY  */
+	</script>
 </body>
 </html>
