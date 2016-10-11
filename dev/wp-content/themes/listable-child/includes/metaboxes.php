@@ -19,7 +19,7 @@ function meal_meta_box($object, $box)
 		$id=$object->ID;
 		$options=get_option('meal_settings_settings');
 		
-		//meal type
+		//meal type array to show
 		$meal_type=$options['meal_settings_textarea_field_0'];
 		$data = array();
 			foreach (explode("\n", $meal_type) as $cLine) {
@@ -73,6 +73,7 @@ function meal_meta_box($object, $box)
 		$currency=get_post_meta($id,'_currency',true);
 		$price=get_post_meta($id,'_price',true);
 		$menu=get_post_meta($id,'_menu',true);
+		$keypoints=get_post_meta($id,'_keypoints',true);
 		?>
 		<p class="form-field">
 			<label for="_price">Price:</label>
@@ -120,13 +121,16 @@ function meal_meta_box($object, $box)
 		</p>
 		
 		<p class="form-field">
+		<label for="_keypoints">Keypoints of a Meal</label>
+		<input type="text" id="keypoints" name="keypoints" value="<?php echo $keypoints ?> ">
+		</p>
+		
+		<p class="form-field">
 			<label for="_price">Add Your Menu:</label>
 			<?php
 				wp_editor( $menu, 'menu' );
 			?>
-			<!--<textarea name="menu" id="menu">
-			<?php// echo $menu; ?> 
-			</textarea>-->
+		
 		</p>
 	</div>
 	<?php
@@ -160,6 +164,8 @@ $new_meta_value_meal_type = ( isset( $_POST['meal_type'] ) ? $_POST['meal_type']
 $new_meta_value_cuisine	=( isset( $_POST['type_cuisine'] )?$_POST['type_cuisine']  : '' );
 $new_meta_value_currency = ( isset( $_POST['currency'] ) ? $_POST['currency']  : '' );
 $new_meta_value_menu = ( isset( $_POST['menu'] ) ? $_POST['menu']  : '' );
+$new_meta_value_keypoints = ( isset( $_POST['keypoints'] ) ? $_POST['keypoints']  : '' );
+
   /* Get the meta keys. */
   $meta_key_price= '_price';
   $meta_key_min_guest = '_min_guest';
@@ -167,6 +173,7 @@ $new_meta_value_menu = ( isset( $_POST['menu'] ) ? $_POST['menu']  : '' );
   $meta_key_meal_type = '_meal_type';
   $meta_key_type_cuisine = '_type_cuisine';
   $meta_key_min_currency = '_currency';
+  $meta_key_keypoints="_keypoints";
   $meta_key_menu = '_menu';
   
 
@@ -177,9 +184,11 @@ $new_meta_value_menu = ( isset( $_POST['menu'] ) ? $_POST['menu']  : '' );
   $meta_value_meal_type = get_post_meta( $post_id, $meta_key_meal_type, true );
   $meta_value_type_cuisine = get_post_meta( $post_id, $meta_key_type_cuisine, true );
   $meta_value_min_currency = get_post_meta( $post_id, $meta_key_min_currency, true );
+  $meta_value_keypoints = get_post_meta( $post_id, $meta_key_keypoints, true );
   $meta_value_menu = get_post_meta( $post_id, $meta_key_menu, true );
 
   /* If a new meta value was added and there was no previous value, add it. */
+ 
  //menu
   if ( $new_meta_value_menu && '' == $meta_value_menu )
    add_post_meta( $post_id, $meta_key_menu, $new_meta_value_menu, true );
@@ -221,9 +230,8 @@ $new_meta_value_menu = ( isset( $_POST['menu'] ) ? $_POST['menu']  : '' );
   
    /* If there is no new meta value but an old value exists, delete it. */
   elseif ( '' == $new_meta_value_min_guest && $meta_value_min_guest )
-  {
-    delete_post_meta( $post_id, $meta_key_min_guest, $meta_value_min_guest );
-  }
+   delete_post_meta( $post_id, $meta_key_min_guest, $meta_value_min_guest );
+  
   
   //maximum guests
   if ( $new_meta_value_max_guest && '' == $meta_value_max_guest )
@@ -265,4 +273,22 @@ elseif($new_meta_value_currency && $new_meta_value_currency != $meta_value_min_c
   
 elseif ( '' == $new_meta_value_currency && $meta_value_min_currency )
    delete_post_meta( $post_id, $meta_key_min_currency, $meta_value_min_currency );
+   
+     //keypoints
+    if ( $new_meta_value_keypoints && '' == $meta_value_keypoints )
+   add_post_meta( $post_id, $meta_key_keypoints, $new_meta_value_keypoints, true );
+
+  /* If the new meta value does not match the old value, update it. */
+elseif ( $new_meta_value_keypoints && $new_meta_value_keypoints != $meta_value_keypoints )
+  update_post_meta( $post_id, $meta_key_keypoints, $new_meta_value_keypoints );
+  
+   /* If there is no new meta value but an old value exists, delete it. */
+  elseif ( '' == $new_meta_value_keypoints && $meta_value_keypoints )
+	delete_post_meta( $post_id, $meta_key_keypoints, $meta_value_keypoints );
+   
+   
 }
+
+ 
+
+  

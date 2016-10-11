@@ -343,3 +343,91 @@ function get_password()
 	exit();
 }
 
+//add custom css
+add_action('admin_head', 'my_custom_fonts');
+
+function my_custom_fonts() {
+  echo '<style>
+  #meal_data .inside .wp_job_manager_meta_data #wp-menu-wrap {
+     position : unset;
+    } 
+  </style>';
+}
+
+//change calendar option in bookigs to dropdown
+
+add_filter('booking_form_fields','wswp_booking_form_fields');
+
+function wswp_booking_form_fields($fields) {
+	 global $wswp_dates_built;
+	 $wswp_dates_built=false;
+    $i = 0;
+    foreach($fields as $field) {
+        $new_fields[$i] = $field;
+        if ($field['type'] == "date-picker" && $wswp_dates_built === false)
+        {
+            $s = $i;
+            $new_fields[$s]['class'] = array('picker-hidden');
+            $i++;
+            $new_fields[$i] = $field;
+            $new_fields[$i]['type'] = "select";
+            $new_fields[$i]['options'] = wswp_build_options($field['availability_rules'][0]);
+            $new_fields[$i]['class'] = array('picker-chooser');
+        }
+        $i++;
+    }
+    return $new_fields;
+}
+
+function wswp_build_options($rules,$building = false) {
+	global $wswp_dates_built;
+    $dates = array();
+	foreach($rules as $dateset) {
+        if ($dateset[0] == "custom") {
+            $year = reset(array_keys($dateset[1]));
+            $month = reset(array_keys($dateset[1][$year]));
+            $day = reset(array_keys($dateset[1][$year][$month]));
+            $dtime = strtotime($year."-".$month."-".$day);
+            $dates[$dtime] = date("d/m/Y",$dtime);
+        }
+
+    }
+    ksort($dates);
+	
+    foreach($dates as $key => $date) {
+        $dates[date("Y-m-d",$key)] = $date;
+        unset($dates[$key]);
+    }
+	$new_dates = array('select' => 'Select') + $dates;
+    $wswp_dates_built = true;
+	return $new_dates;
+}
+
+add_action('wp_footer','wswp_css_js');
+
+function wswp_css_js() {
+    //adding in footer as not enough to justify new stylesheet and js file
+    ?><style type="text/css">
+        .picker-hidden .picker,.picker-hidden legend {
+            display:none;
+        }
+        </style>
+        <script type='text/javascript'>
+            jQuery(function($) {
+//Move .picker chooser up in the DOM
+                $(".picker-chooser").insertBefore('.wc-bookings-date-picker-date-fields');
+//Attach handler to insert chosen date into picker fields
+                $("select#wc_bookings_field_start_date").on('change', function() {
+                var selectedDate = $(this).val()
+                var selectedDateBreakdown = selectedDate.split("-");
+
+                $( "input[name*='wc_bookings_field_start_date_year']" ).val( selectedDateBreakdown[0] );
+                $( "input[name*='wc_bookings_field_start_date_month']" ).val( selectedDateBreakdown[1] );
+                $( "input[name*='wc_bookings_field_start_date_day']" ).val( selectedDateBreakdown[2] );
+            });
+            });
+
+            </script>
+            <?php
+}
+

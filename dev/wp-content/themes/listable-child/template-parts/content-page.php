@@ -66,7 +66,7 @@
 	<?php endif; ?>
 
 	<div class="entry-content" id="entry-content-anchor">
-	<div class="container<?php if($show) echo ' listing_cust';?>">
+	<div class="container<?php if(is_page(6)) echo ' listing_cust';?>">
 		<?php
 			if($dashboard_page)
 			{

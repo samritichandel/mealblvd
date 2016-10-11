@@ -59,7 +59,10 @@ if ( class_exists( 'WP_Job_Manager_Claim_Listing' ) ) {
 						endif;
 					?></h1>
 					<?php the_company_tagline( '<span class="entry-subtitle" itemprop="description">', '</span>' ); ?>
-
+					<?php $keypoints=get_post_meta($post->ID,'_keypoints',true); 
+						if($keypoints)
+							echo '<p>'.$keypoints.'</p>';
+					?>
 					<?php
 					/**
 					 * single_job_listing_start hook

@@ -472,6 +472,13 @@ function custom_submit_job_form_fields( $fields ) {
 		'required' => true
 		);
 		
+		//textfield for keypoints
+	$fields['job']['keypoints'] = array(
+		'label' => 'Keypoints for your Meal',
+		'type' => 'text',
+		'priority' => 2.1
+		);
+		
 		//textarea for menu_name
 		$fields['job']['menu'] = array(
 		'label' => 'Menu',
@@ -557,7 +564,6 @@ function custom_submit_job_form_fields( $fields ) {
 	unset( $fields['company']['company_name'] );
 	unset( $fields['job']['application'] );
 	unset( $fields['job']['job_hours'] );
-	unset( $fields['job']['job_tags'] );
 	unset( $fields['company']['company_website'] );
 	
 //	$fields['company']['company_name']['priority'] = 1.5;
