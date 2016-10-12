@@ -354,12 +354,12 @@ function my_custom_fonts() {
   </style>';
 }
 
-//change calendar option in bookigs to dropdown
+//change calendar option in bookings to dropdown
 
 add_filter('booking_form_fields','wswp_booking_form_fields');
 
 function wswp_booking_form_fields($fields) {
-	 global $wswp_dates_built;
+	global $wswp_dates_built;
 	 $wswp_dates_built=false;
     $i = 0;
     foreach($fields as $field) {
@@ -381,21 +381,37 @@ function wswp_booking_form_fields($fields) {
 
 function wswp_build_options($rules,$building = false) {
 	global $wswp_dates_built;
-    $dates = array();
 	foreach($rules as $dateset) {
-        if ($dateset[0] == "custom") {
-            $year = reset(array_keys($dateset[1]));
+		
+		if($dateset[0] =="time:range")
+		{
+			//fetch first key within array
+			$year = reset(array_keys($dateset[1])); 
             $month = reset(array_keys($dateset[1][$year]));
             $day = reset(array_keys($dateset[1][$year][$month]));
-            $dtime = strtotime($year."-".$month."-".$day);
-            $dates[$dtime] = date("d/m/Y",$dtime);
-        }
-
-    }
-    ksort($dates);
-	
-    foreach($dates as $key => $date) {
-        $dates[date("Y-m-d",$key)] = $date;
+			$time=reset($dateset[1][$year][$month][$day]);
+			$dtime = strtotime($year."-".$month."-".$day);
+			$converted_time=date("g:i A", strtotime($time)); //am pm format
+            $dates[$dtime] =$converted_time;
+		}
+		else
+		{
+			if ($dateset[0] == "custom") 
+			{
+				$year = reset(array_keys($dateset[1]));
+				$month = reset(array_keys($dateset[1][$year]));
+				$day = reset(array_keys($dateset[1][$year][$month]));
+				$dtime = strtotime($year."-".$month."-".$day);
+				$dates[$dtime] = '';
+			}
+		}
+		 
+	 }
+	 
+	ksort($dates); //sort in ascending
+	foreach($dates as $key => $date) {
+		$day=date('D', strtotime( date("Y-m-d",$key))); //fetch the week day
+        $dates[date("Y-m-d",$key)] = $day.'.'.date('M jS ',$key).' '.$date;  
         unset($dates[$key]);
     }
 	$new_dates = array('select' => 'Select') + $dates;
@@ -406,7 +422,7 @@ function wswp_build_options($rules,$building = false) {
 add_action('wp_footer','wswp_css_js');
 
 function wswp_css_js() {
-    //adding in footer as not enough to justify new stylesheet and js file
+    //adding related js and css in footer
     ?><style type="text/css">
         .picker-hidden .picker,.picker-hidden legend {
             display:none;
@@ -430,4 +446,7 @@ function wswp_css_js() {
             </script>
             <?php
 }
+
+//function to check availablity
+
 
