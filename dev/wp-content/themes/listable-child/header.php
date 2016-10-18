@@ -106,7 +106,7 @@ $dashboard=get_field('user_dashboard_page',$id);
 if(is_array($dashboard) && $dashboard[0] == 'yes' && is_user_logged_in())
 {
 	?>
-<div class="sub-menu">
+<div class="sub-menu-dashboard">
 	<div class="container">
 		<div class="row">
 			<div class="col-md-11 col-md-offset-1">

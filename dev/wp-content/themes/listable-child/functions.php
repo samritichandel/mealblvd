@@ -354,7 +354,7 @@ function my_custom_fonts() {
   </style>';
 }
 
-//change calendar option in bookings to dropdown
+//change calendar option in bookigs to dropdown
 
 add_filter('booking_form_fields','wswp_booking_form_fields');
 
@@ -422,7 +422,7 @@ function wswp_build_options($rules,$building = false) {
 add_action('wp_footer','wswp_css_js');
 
 function wswp_css_js() {
-    //adding related js and css in footer
+    //adding in footer as not enough to justify new stylesheet and js file
     ?><style type="text/css">
         .picker-hidden .picker,.picker-hidden legend {
             display:none;
@@ -447,6 +447,106 @@ function wswp_css_js() {
             <?php
 }
 
-//function to check availablity
+//filter to unset the billing fileds in checkout
+add_filter( 'woocommerce_checkout_fields' , 'custom_override_checkout_fields' );
+function custom_override_checkout_fields( $fields ) {
+unset($fields['billing']['billing_address_1']);
+unset($fields['billing']['billing_address_2']);
+unset($fields['billing']['billing_city']);
+unset($fields['billing']['billing_postcode']);
+unset($fields['billing']['billing_country']);
+unset($fields['billing']['billing_state']);
+unset($fields['order']['order_comments']);
+unset($fields['billing']['billing_company']);
+return $fields;
+}
+
+//custom fields to save data
+/**
+
+* save listing id on click of book now*/
+add_action( 'wp_ajax_set_listing_id', 'set_listing_id' );    
+add_action( 'wp_ajax_nopriv_set_listing_id', 'set_listing_id' ); 
+function set_listing_id()
+{
+	$id=$_POST['id'];
+	session_start();
+	$_SESSION['wdm_user_custom_data'] = $id;
+	//echo 'ID'.$_SESSION['wdm_user_custom_data'];
+	exit();
+}
 
 
+add_filter('woocommerce_add_cart_item_data','wdm_add_item_data',1,2);
+ 
+if(!function_exists('wdm_add_item_data'))
+{
+    function wdm_add_item_data($cart_item_data,$product_id)
+    {
+        /*Here, We are adding item in WooCommerce session with, wdm_user_custom_data_value name*/
+        global $woocommerce;
+        session_start();    
+        if (isset($_SESSION['wdm_user_custom_data'])) {
+            $option = $_SESSION['wdm_user_custom_data'];       
+            $new_value = array('wdm_user_custom_data_value' => $option);
+        }
+        if(empty($option))
+            return $cart_item_data;
+        else
+        {    
+            if(empty($cart_item_data))
+                return $new_value;
+            else
+                return array_merge($cart_item_data,$new_value);
+        }
+        unset($_SESSION['wdm_user_custom_data']); 
+        //Unset our custom session variable, as it is no longer needed.
+    }
+}
+
+//Extract Custom Data from WooCommerce Session and Insert it into Cart Object
+add_filter('woocommerce_get_cart_item_from_session', 'wdm_get_cart_items_from_session', 1, 3 );
+if(!function_exists('wdm_get_cart_items_from_session'))
+{
+    function wdm_get_cart_items_from_session($item,$values,$key)
+    {
+        if (array_key_exists( 'wdm_user_custom_data_value', $values ) )
+        {
+        $item['wdm_user_custom_data_value'] = $values['wdm_user_custom_data_value'];
+        }       
+        return $item;
+    }
+}
+
+
+//Add Custom Data as Metadata to the Order Items
+add_action('woocommerce_add_order_item_meta','wdm_add_values_to_order_item_meta',1,2);
+if(!function_exists('wdm_add_values_to_order_item_meta'))
+{
+  function wdm_add_values_to_order_item_meta($item_id, $values)
+  {
+        global $woocommerce,$wpdb;
+        $user_custom_values = $values['wdm_user_custom_data_value'];
+        if(!empty($user_custom_values))
+        {
+            wc_add_order_item_meta($item_id,'wdm_user_custom_data',$user_custom_values);  
+        }
+  }
+}
+
+add_action('woocommerce_before_cart_item_quantity_zero','wdm_remove_user_custom_data_options_from_cart',1,1);
+if(!function_exists('wdm_remove_user_custom_data_options_from_cart'))
+{
+    function wdm_remove_user_custom_data_options_from_cart($cart_item_key)
+    {
+        global $woocommerce;
+        // Get cart
+        $cart = $woocommerce->cart->get_cart();
+        // For each item in cart, if item is upsell of deleted product, delete it
+        foreach( $cart as $key => $values)
+        {
+        if ( $values['wdm_user_custom_data_value'] == $cart_item_key )
+            unset( $woocommerce->cart->cart_contents[ $key ] );
+        }
+    }
+}

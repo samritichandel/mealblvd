@@ -295,16 +295,49 @@ jQuery.validator.addMethod("valueNotEquals", function(value, element, arg){
 			jQuery('#review_btn').hide();
 		 }
     });
-  
 	
+	//save id in 
+	jQuery('.single_add_to_cart_button').click(function(){
+		var id=jQuery('.job_listing').attr('id');
+		var exact_id=id.substring(5);
+		 jQuery.post(ajaxurl, {'action':'set_listing_id','id': exact_id});
+	});
+	
+	
+  
 });
+
 
 //redirect to host page on click of button
 jQuery('.link-host-btn').click(function(){
 window.location.href=window.location.host;
 });
 
+// Get the modal
+var modal = document.getElementById('myModal');
 
+// Get the button that opens the modal
+var btn = document.getElementById("myBtn");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks the button, open the modal 
+btn.onclick = function() {
+    modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+    modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
 
 
 

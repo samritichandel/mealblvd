@@ -21,7 +21,7 @@ get_header(); ?>
 					 <li>
                         <div class="section3-das-box-heading">
 							<h2>Hello <?php echo $user->data->display_name; ?></h2>
-                            <p>Update your profile picture</p>
+                            <p></p>
                         </div>
                         
                         <div class="section3-das-box-center">
@@ -54,7 +54,7 @@ get_header(); ?>
                      </div>
                         
                         <div class="section3-das-box-bottom">
-                            <a href="#">Save my profile</a>
+                            <a href="<?php echo site_url();?>/dashboard-profile/">Edit my profile</a>
                         </div>
                     </li>
 				
@@ -128,6 +128,30 @@ get_header(); ?>
 		}
 		
 		?>
+		
+	<section class="section4-dash">
+      <div class="container">
+          <div class="row">
+              <div class="col-md-11 col-md-offset-1">
+          <div class="dash-orders">
+              <h2>Orders</h2>
+			  <div class="listing-img">
+			  
+				<?php
+				
+					//editing the core template files
+				echo do_shortcode('[woocommerce_my_account]');?>
+              
+          </div>
+          
+              
+              
+              
+          </div>
+                  </div>
+              </div>
+      </div>
+</section>
 	<section class="section5-dash">
       <div class="container">
           <div class="row">

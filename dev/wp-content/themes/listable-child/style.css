@@ -376,7 +376,9 @@ ul.primary-menu > .menu-item:not(.cta) {
 .customize-support #masthead {
     margin-top: 32px;
 }
-
+.customize-support header#masthead {
+    margin-top: 0;
+}
 .customize-support #menu-main-menu >li:last-child {
     padding-right: 13px;
 }
@@ -2159,7 +2161,19 @@ faq .panel-collapse.collapsing,
 .chosen-container-single .chosen-single div {
     right: 10px !important;
 }
+.explore_sec .select-tags {
+    width: 200px;
+}
+ .myflex.no-map .active-tag{height: 50px;padding-top:14px;}
 
+.myflex.no-map .remove-tag {
+    top: 16px;
+}
+  .myflex.no-map .search_jobs > *{vertical-align: top;}
+.explore_sec .active-tags {
+    width: 100% !important;
+    display: inline-block !important;
+}
 
 /**** Post Listing Page ****/
 
@@ -2346,6 +2360,9 @@ faq .panel-collapse.collapsing,
 }
 
 
+.logged-in .inner_page_cntnt {
+    margin-top: 0;
+}
 /**** 404 Page ****/
 
 .error_main {
@@ -2628,7 +2645,7 @@ a.flex-prev {
 }
 
 .flex-viewport {
-    max-height: 330px !important;
+    max-height: 500px !important;
 }
 
 .flexslider {
@@ -3463,7 +3480,10 @@ a.flex-prev {
     font-size: 16px;
     padding: 5px 0 0 !important;
 }
-
+.single_job_listing  p{    color: #484848;
+    font-family: "Hanken";
+    font-size: 22px;
+    margin-top: 20px;font-weight: bold;}
 .listing-sidebar--main span.action__text {
     display: inline-block;
     vertical-align: middle;
@@ -3483,7 +3503,7 @@ a.flex-prev {
     border-radius: 2px;
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
-    -ms-border-radius: 2px;
+    -ms-border-radius: 2px;margin-bottom: 15px;
 }
 
 #listing_content-2 p {
@@ -3534,9 +3554,18 @@ a.flex-prev {
 }
 
 .single_job_listing .price-single-listing {
-    display: inline-block;
+    display: inline-block;    color: #484848 !important;
+    font-family: "Hanken";
+    font-weight: 700;
+    font-size: 30px;
+    margin-right: 10px;
+   
 }
-
+.single_job_listing .price-single-listing  span{color: #484848;
+    font-family: "Hanken";
+    font-size: 13px !important;
+    margin: 0;
+   }
 .single_job_listing .listing-contact {
     margin-left: 15px;
 }
@@ -3582,13 +3611,13 @@ a.flex-prev {
 }
 
 .listing-sidebar a {
-    float: right;
+    float: none;
     font-family: "Hanken";
     font-weight: bold;
     font-size: 17px;
     color: #959595;
 }
-
+.widget_listing_tags li{text-align: center;}
 .listing-sidebar a:hover {
     color: #000;
 }
@@ -3901,8 +3930,29 @@ nav.navigation.post-navigation .nav-links .nav-next {
     display: inline-block;
     right: -50%;
 }
-
-
+#listing_tags-3 {
+    margin: 0;
+    padding: 0;
+}
+#listing_tags-3  li {
+    width: 32%;
+    margin-right: 1%;text-align: left;    display: inline-block;
+    vertical-align: middle;
+   
+    font-family: "Hanken";
+    font-size: 16px;
+}
+#listing_tags-3  li  span.tag__text{ color: #484848; vertical-align: middle;
+   
+    font-family: "Hanken";
+    font-size: 16px;}
+#listing_tags-3  li:nth-child(3n){margin-right: 0;}
+#listing_tags-3  li .tag__icon{font-size: 25px;
+    color: #484848;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 20px;}
+#listing_tags-3  li:hover a span.tag__text{color:#b0b0b0;}
 /**** Dashboard Page ****/
 
 .section3-dashboard {
@@ -4246,3 +4296,66 @@ nav.navigation.post-navigation .nav-links .nav-next {
 {
 	display:none;
 } 
+.sub-menu {
+    background: #ff4d58;
+    position: relative;
+    margin-top: 93px;
+}.sub-menu .nav-pills>li>a {
+    color: #fff;
+    background-color: transparent;
+    border-radius: 0;
+    padding: 21px 0px;
+    margin-right: 40px;
+}
+
+.sub-menu .nav-pills>li.current-menu-item >a {
+    border-bottom: 4px solid #fff;
+    border-radius: 0;
+    padding-top: 22px;
+    padding-bottom: 17px;
+}
+
+.sub-menu .nav-pills>li>a:hover {
+    background-color: transparent;
+    color: #000;
+}
+
+/* 17 october */
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+/* The Close Button */
+.close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}

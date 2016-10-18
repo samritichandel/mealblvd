@@ -72,7 +72,13 @@
 			{
 				if ( is_user_logged_in() ) 
 				{
-					the_content();
+					?>
+					<div class="row">
+						<div class="col-md-10 col-md-offset-1">
+						<?php the_content();?>
+						</div>
+					</div>
+					<?php
 				}
 				else
 				{
