@@ -28,15 +28,21 @@ get_header(); ?>
 						<?php 
 							//get img of user
 							$img=get_user_meta($user->ID,'simple_local_avatar',true); 
+							$img_fb_url=get_user_meta($user->ID,'wsl_current_user_image',true);
 							$img_url="";
 							if(isset($img[150]))
 							{
 								$img_url=$img[150];
 							}
-							else
+							elseif($img[96])
 							{
 								$img_url=$img[96];
 							}
+							elseif($img_fb_url)
+							{
+								$img_url=$img_fb_url;
+							}
+							
 						?>
 					<img class="img-responsive" alt="user" src="<?php echo $img_url; ?>">
                     <p><?php $email=$user->data->user_email; 

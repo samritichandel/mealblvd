@@ -48,13 +48,14 @@ function meal_settings_settings_init(  ) {
 		'meal_settings_pluginPage_section' 
 	);
 
+	/*
 	add_settings_field( 
 		'meal_settings_text_field_4', 
 		__( 'Currency', 'Meal Settings' ), 
 		'meal_settings_textarea_field_4_render', 
 		'pluginPage', 
 		'meal_settings_pluginPage_section' 
-	);
+	);*/
 }
 
 function meal_settings_textarea_field_0_render(  ) { 
@@ -88,7 +89,7 @@ function meal_settings_text_field_3_render(  ) {
 	<?php
 }
 
-function meal_settings_textarea_field_4_render(  ) { 
+/*function meal_settings_textarea_field_4_render(  ) { 
 	$options = get_option( 'meal_settings_settings' );
 	?>
 	<textarea cols='40' rows='5' name='meal_settings_settings[meal_settings_text_field_4]'>
@@ -96,6 +97,7 @@ function meal_settings_textarea_field_4_render(  ) {
 	</textarea
 	<?php
 }
+*/
 function meal_settings_settings_section_callback(  ) { 
 	echo __( 'Edit your settings here', 'Meal Settings' );
 }

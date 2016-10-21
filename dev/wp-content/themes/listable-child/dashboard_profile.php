@@ -99,14 +99,21 @@ session_start();
 					}
 					else{
 						$img=get_user_meta($user->ID,'simple_local_avatar',true);
+						//if through fb
+						$img_fb_url=get_user_meta($user->ID,'wsl_current_user_image',true);
+						
 						$img_url="";
 						if(isset($img[150]))
 						{
 							$img_url=$img[150];
 						}
-						else
+						elseif(isset($img['full']))
 						{
 							$img_url=$img['full'];
+						}
+						elseif(isset($img_fb_url))
+						{
+							$img_url=$img_fb_url;
 						}
 						?>
 						<img src="<?php echo $img_url;?>" alt="profile-img" class="img-responsive">
@@ -155,7 +162,7 @@ session_start();
 					</div>
 					
 					<div class="form-group profile-pwd">
-                      <label for="email">New Password<p>  (Current Password: leave blank to leave unchanged)</p></label>
+                      <label for="email">New Password<p>  (New Password: leave blank to leave unchanged)</p></label>
 					<input name="new_password" type="password" id="new_password">
 					</div>
 					

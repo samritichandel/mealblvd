@@ -13,7 +13,7 @@ global $post;
 $location = get_post_meta( get_the_ID(), '_job_location', true);
 $phone = get_post_meta( get_the_ID(), '_company_phone', true);
 $twitter = get_post_meta( get_the_ID(), '_company_twitter', true);
-$currency=get_post_meta( get_the_ID(), '_currency', true);
+//$currency=get_post_meta( get_the_ID(), '_currency', true);
 $price=get_post_meta( get_the_ID(), '_price', true);
 ?>
 <div class="single-meta">
@@ -22,8 +22,7 @@ $price=get_post_meta( get_the_ID(), '_price', true);
 	?>
 	<div class="price-single-listing">
 	<?php if(!empty($price)) {
-		if(!empty($currency))
-			echo $currency;
+			echo '$';
 			echo $price ;
 		}?> 
 	

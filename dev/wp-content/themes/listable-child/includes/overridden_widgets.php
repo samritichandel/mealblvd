@@ -525,12 +525,10 @@ class Front_Page_Listing_Cards_Widget extends WP_Widget {
 										
 										<?php 
 										$price=get_field('_price',$post->ID);
-										$currency=get_field('_currency',$post->ID);
 										if($price)
 										{
 											echo '<div class="price">';
-											if($currency)
-												echo $currency;
+											echo '$';
 											echo $price;
 											echo '</div>';
 										}

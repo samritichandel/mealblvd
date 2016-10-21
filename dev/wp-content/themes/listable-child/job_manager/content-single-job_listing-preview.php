@@ -28,7 +28,7 @@ if ( ! is_wp_error( $terms ) && ( is_array( $terms ) || is_object( $terms ) ) ) 
 	}
 } ?>
 
-<div class="container">
+<div class="container-preview">
 <div class="add-menu-gallary">
 <div class="slider-main">
 <nav class="single-categories-breadcrumb">
@@ -93,8 +93,7 @@ if ( ! empty( $photos ) ) : ?>
 	<?php endif; ?>
 </div>
 </div>
-
-
+</div>
 <div class="single_job_listing"
 	data-latitude="<?php echo get_post_meta($post->ID, 'geolocation_lat', true); ?>"
 	data-longitude="<?php echo get_post_meta($post->ID, 'geolocation_long', true); ?>"
@@ -111,7 +110,10 @@ if ( ! empty( $photos ) ) : ?>
 
 					<?php the_title( '<h1 class="entry-title" itemprop="name">', '</h1>' ); ?>
 					<?php the_company_tagline( '<span class="entry-subtitle" itemprop="description">', '</span>' ); ?>
-
+					<?php $keypoints=get_post_meta($post->ID,'_keypoints',true); 
+						if($keypoints)
+							echo '<p>'.$keypoints.'</p>';
+					?>
 					<?php
 					/**
 					 * single_job_listing_start hook
@@ -146,17 +148,16 @@ if ( ! empty( $photos ) ) : ?>
 		</div>
 	<?php endif; ?>
 </div>
-</div>
+
 </div>
 <div class="menu-listing">
-<div class="container">
-	<?php	
+<?php	
 		global $post;
 		$menu=get_post_meta($post->ID,'_menu',true);
 		if($menu){?>
 		<h2>Menu</h2>
 		<?php } ?>
 	<?php dynamic_sidebar('listing_bottom_content');?>
-</div>
+
 </div>
 

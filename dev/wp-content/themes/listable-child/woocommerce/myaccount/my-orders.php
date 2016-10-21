@@ -51,7 +51,8 @@ foreach($items as $item)
 
 //show listing only once, inspite of the number of orders being placed from the listing
 $listings = array_unique($liste);
-
+if($listings)
+{
 ?>
 <ul id="myBtn">
 <?php
@@ -63,11 +64,13 @@ $user_id=$post->post_author;
 $user= get_userdata($user_id);
 $listing_img=get_post_meta($post->ID,'_main_image',true);
 $user_image=get_user_meta($user_id, 'simple_local_avatar');
+$img_fb_url=get_user_meta($user_id,'wsl_current_user_image',true);
+
 ?>
 <li class="listing-li-7">
 <a href="javascript:void(0)">
                       <div class="listing-box-img">
-                          <img class="img-responsive" alt="order-1" src="<?php echo $listing_img[0];?>">
+                      <img class="img-responsive" alt="order-1" src="<?php if(is_array($listing_img[0])){ echo $listing_img[0][0]; } else { echo $listing_img[0]; }?>">
                       </div>
                       
                       <div class="listing-box-center">
@@ -80,9 +83,13 @@ $user_image=get_user_meta($user_id, 'simple_local_avatar');
 						{
 							$src=$user_image[0][150];
 						}
-						else
+						elseif($user_image[0]['full'])
 						{
 							$src=$user_image[0]['full'];
+						}
+						elseif($img_fb_url)
+						{
+							$src=$img_fb_url;
 						}
 						?>
                           <img class="img-responsive" alt="order-2" src="<?php echo $src; ?>">
@@ -129,12 +136,10 @@ $user_image=get_user_meta($user_id, 'simple_local_avatar');
                           <div class="lisitng-price">
 						  <?php 
 								$price=get_field('_price',$post->ID);
-								$currency=get_field('_currency',$post->ID);
 								if($price)
 								{
 									echo '<h2>';
-									if($currency)
-										echo $currency;
+									echo '$';
 									echo $price;
 									echo '</h2>';
 								}
@@ -150,6 +155,11 @@ $user_image=get_user_meta($user_id, 'simple_local_avatar');
 <?php } ?>
 </ul>
 <?php
+}
+else
+{
+	echo "You Don't have any orders yet!!";
+}
 
 if ( $customer_orders ) : ?>
 <div id="myModal" class="modal">

@@ -16,10 +16,32 @@ get_header(); ?>
 
 		<article id="post-<?php the_ID(); ?>" <?php post_class(); ?> itemscope itemtype="http://schema.org/LocalBusiness">
 		
-			<header class="page-header has-featured-image">
-				<div class="page-header-background" style="background-image: url('http://mealblvd.com/dev/wp-content/uploads/2015/10/how-it-works.jpg')"></div>
-				<h1 class="page-title">Chefs and Foodies together one meal</h1>
-				<span class="entry-subtitle">Find great places to eat and connect with great minds.</span>
+		<?php
+		$main_title=get_post_meta($post->ID,'main_title',true);
+		$subtitle=get_post_meta($post->ID,'subtitle',true);
+		$image=get_post_meta($post->ID,'banner_single_listing',true);
+		if($image)
+		{
+			$style='style="background-image:url('.wp_get_attachment_url( $image ).')"';
+		}
+		else
+		{
+			$style='style="background-image:url(http://mealblvd.com/dev/wp-content/uploads/2015/10/how-it-works.jpg)"';
+		}
+	?>
+		<header class="page-header has-featured-image">
+				<div class="page-header-background" <?php if($style) { echo $style; }?>></div>
+				<h1 class="page-title"><?php if($main_title) { echo $main_title; }else {?>Chefs and Foodies together one meal <?php }?></h1>
+				<span class="entry-subtitle">
+				<?php if($subtitle) 
+				{ 
+					echo $subtitle; 
+				} 
+				else
+				{?>
+				Find great places to eat and connect with great minds.
+				<?php }?>
+				</span>
 			</header>
 			<div class="single-meal-listing">
 			<div class="container">
@@ -47,7 +69,7 @@ get_header(); ?>
 							}
 						} ?>
 						</nav>
-						<h2>Our Gallery</h2>
+						<h2>Gallery</h2>
 						<?php
 						if ( ! post_password_required() ) {
 							$photos = listable_get_listing_gallery_ids();
@@ -119,19 +141,16 @@ get_header(); ?>
 				</div><!-- .entry-content -->
 				</div><!--container end-->
 				</div><!--job container end-->
+				<?php global $post;
+				$menu=get_post_meta($post->ID,'_menu',true);
+				if($menu){ ?>
 			   <div class="menu-listing">
 					<div class="container">
-						<?php	
-							global $post;
-							$menu=get_post_meta($post->ID,'_menu',true);
-							if($menu){?>
-							<h2>Menu</h2>
-							<?php } ?>
-							
-						
-						<?php dynamic_sidebar('listing_bottom_content');?>
+					<h2>Menu</h2>
+							<?php dynamic_sidebar('listing_bottom_content');?>
 					</div>
 			   </div>
+			<?php }?>
 			   <div class="reviews">
 					<div class="container">
 						<div class="row">

@@ -12,6 +12,9 @@ jQuery(function() {
         }
     });
 	
+	//add placeholder text
+	jQuery('#url').attr('placeholder','example:http://www.example.com');
+	
 	//ajax for getting user email
 	jQuery("#user_email").blur(function(){
         var email=jQuery(this).val();
@@ -97,6 +100,7 @@ jQuery('#registration').validate({
 	
 });
 
+
 //validation for user profile page
 jQuery('#user_profile').validate({
 	rules: {
@@ -113,14 +117,26 @@ jQuery('#user_profile').validate({
 			required: true,
 			email: true		 
 		},
-		
+		password:
+		{
+			  required: function () {
+              return jQuery('#new_password').val().length > 0 || jQuery('#confirm_password').val().length > 0;
+                }
+           
+		},
 		new_password: 
 		{
-			minlength: 8	
+			minlength: 8,
+			required: function () {
+              return jQuery('#password').val().length > 0;
+                }
 		},
 		confirm_password:
 		{
 			minlength: 8,
+			required: function () {
+            return jQuery('#password').val().length > 0;
+             },
 			equalTo : "#new_password"
 		}
 	},
@@ -133,12 +149,15 @@ jQuery('#user_profile').validate({
 				digits: "Please enter a valid number.",
 				maxlength: "Please enter a valid number."
 			   },
+		password: { required:  "Please enter your current password."},
 		new_password: {
-				minlength: "Your password should be atleat 8 characters long."
+				minlength: "Your password should be atleat 8 characters long.",
+				required:  "Please enter your new password."
 				},
 		confirm_password:
 		{
 			minlength:"Your password should be atleat 8 characters long.",
+			required:  "Please enter confirm password.",
 			equalTo : "Password does not match."
 		}		
 	}
@@ -152,6 +171,8 @@ var doneTypingInterval = 1000;  //time in ms (5 seconds)
 
 //on keyup, start the countdown
 jQuery('#password').keyup(function(){
+	jQuery('#password').removeClass('error').addClass('valid');
+	jQuery('#pass_check').remove();
     clearTimeout(typingTimer);
     if (jQuery('#password').val()) {
         typingTimer = setTimeout(doneTyping, doneTypingInterval);
@@ -251,11 +272,13 @@ jQuery.validator.addMethod("valueNotEquals", function(value, element, arg){
    max_guest: { valueNotEquals: 0 },
    type_cuisine: { valueNotEquals: 0 },
    currency: { valueNotEquals: 0 },
-   job_title: {required: true,maxlength: 100,},
+   job_title: {required: true,maxlength: 100},
    price: {required: true,digits: true,maxlength: 5},
    job_location : {maxlength: 200},
    company_phone :{maxlength: 20},
-   company_twitter: {maxlength: 50}
+   company_twitter: {maxlength: 50},
+   keypoints: {maxlength: 500},
+   job_hours: {required: true, minlength:20, maxlength: 100}
    },
   messages: {
   meal_type: { valueNotEquals: "" },
@@ -272,6 +295,8 @@ jQuery.validator.addMethod("valueNotEquals", function(value, element, arg){
 				digits: "",
 				maxlength: ""}
   } ,
+  keypoints: {maxlength: ""},
+  job_hours: {required: "",maxlength: "", minlength: ""},
   job_location : {maxlength: ""},
   company_phone: {maxlength: ""},
   company_twitter: {maxlength: ""}
@@ -303,7 +328,12 @@ jQuery.validator.addMethod("valueNotEquals", function(value, element, arg){
 		 jQuery.post(ajaxurl, {'action':'set_listing_id','id': exact_id});
 	});
 	
-	
+	//add class if preview page
+	if (jQuery("#job_preview").html()) {
+				jQuery('#content').addClass('preview_meal');
+		}
+	//preview_meal
+
   
 });
 
@@ -323,13 +353,19 @@ var btn = document.getElementById("myBtn");
 var span = document.getElementsByClassName("close")[0];
 
 // When the user clicks the button, open the modal 
+if(btn)
+{
 btn.onclick = function() {
     modal.style.display = "block";
 }
+}
 
 // When the user clicks on <span> (x), close the modal
+if(span)
+{
 span.onclick = function() {
     modal.style.display = "none";
+}
 }
 
 // When the user clicks anywhere outside of the modal, close it

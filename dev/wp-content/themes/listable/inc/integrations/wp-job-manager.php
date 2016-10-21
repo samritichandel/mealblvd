@@ -407,14 +407,16 @@ function custom_submit_job_form_fields( $fields ) {
 				$max_arr[$k-1]=$k;
 			}
 			array_unshift($max_arr, "Select");
+			
 			//currency
-			$currency=$options['meal_settings_text_field_4'];
+			/*$currency=$options['meal_settings_text_field_4'];
 			$currency_data = array();
 			foreach (explode("\n", $currency) as $cLine) {
 				list ($cKey, $cValue) = explode(':', $cLine, 2);
 				$currency_data[$cKey] = $cValue;
 			}
 			$currency_data_final_array=array('0' => 'Select') + $currency_data;
+			*/
 		}
 
 	//get the meal type
@@ -455,13 +457,14 @@ function custom_submit_job_form_fields( $fields ) {
 		
 		
 	//get the currency
-	$fields['job']['currency'] = array(
+	/*$fields['job']['currency'] = array(
 		'label' => 'Currency',
 		'type' => 'select',
 		'options' => $currency_data_final_array,
 		'required' => true,
 		'priority' => 1.7
 		);
+		*/
 	
 		
 	//textfield for price per guest
@@ -536,11 +539,11 @@ function custom_submit_job_form_fields( $fields ) {
 	$fields['company']['company_logo']['description'] = esc_html__( 'The first image will be shown on listing cards.', 'listable' );
 
 	$fields['job']['job_hours'] = array(
-		'label'       => esc_html__( 'Hours of Operation', 'listable' ),
+		'label'       => esc_html__( 'Date and Time of Event (Note: Make sure to add it in exact format given in example to make your event bookable)', 'listable' ),
 		'type'        => 'textarea',
-		'placeholder' => esc_html__( "Mon - Fri: 09:00 - 23:00 \nSat - Sun: 17:00 - 23:00", 'listable' ),
+		'placeholder' => esc_html__( "eg:2016-10-29 15:00 16:00 (date(Y-M-D) startimeofevent endtimeofevent)   To add multiple dates,add all required parameters in new line", 'listable' ),
 		'description' => sprintf( '<span class="description_tooltip right">%s</span>', esc_html__( 'Feel free to change the text format to fit your needs.', 'listable' ) ),
-		'required'    => false,
+		'required'    => true,
 		'priority'    => 2.7
 	);
 
@@ -556,14 +559,14 @@ function custom_submit_job_form_fields( $fields ) {
 	$fields['company']['company_website']['placeholder'] = esc_html__( 'e.g yourwebsite.com, London', 'listable' );
 	$fields['company']['company_website']['description'] = sprintf( '<span class="description_tooltip left">%s</span>', esc_html__( 'You can add more similar panels to better help the user fill the form', 'listable' ) );
 
-
+	$fields['job']['job_hours'];
 
 	// temporary unsets
 	unset( $fields['company']['company_video'] );
 	unset( $fields['job']['job_type'] );
 	unset( $fields['company']['company_name'] );
 	unset( $fields['job']['application'] );
-	unset( $fields['job']['job_hours'] );
+//	unset( $fields['job']['job_hours'] );
 	unset( $fields['company']['company_website'] );
 	
 //	$fields['company']['company_name']['priority'] = 1.5;
@@ -573,12 +576,16 @@ function custom_submit_job_form_fields( $fields ) {
 add_filter( 'submit_job_form_fields', 'custom_submit_job_form_fields' );
 
 function listable_maybe_clean_main_images_on_submit( $job_data, $post_title, $post_content, $status, $values ) {
+	
+	
 	if ( empty( $values['main_image'] ) ) {
 		$listing = get_page_by_title( $post_title, null, 'job_listing' );
 		if ( ! is_wp_error( $listing ) && isset( $listing->ID ) ) {
 			update_post_meta( $listing->ID, 'main_image', '' );
 		}
 	}
+	
+	
 	return $job_data;
 }
 add_filter( 'submit_job_form_save_job_data', 'listable_maybe_clean_main_images_on_submit', 10, 5);

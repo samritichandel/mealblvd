@@ -56,21 +56,21 @@ function meal_meta_box($object, $box)
 			array_unshift($max_arr, "Select");
 			
 			//currency
-			$currency=$options['meal_settings_text_field_4'];
+			/*$currency=$options['meal_settings_text_field_4'];
 			$currency_data = array();
 			foreach (explode("\n", $currency) as $cLine) {
 				list ($cKey, $cValue) = explode(':', $cLine, 2);
 				$currency_data[$cKey] = $cValue;
 			}
 			$currency_data_final_array=array('0' => 'Select') + $currency_data;
-		
+			*/
 		
 		
 		$minimum_guest=get_post_meta($id,'_min_guest',true);
 		$maximum_guest=get_post_meta($id,'_max_guest',true);
 		$meal_type=get_post_meta($id,'_meal_type',true);
 		$type_cuisine=get_post_meta($id,'_type_cuisine',true);
-		$currency=get_post_meta($id,'_currency',true);
+		//$currency=get_post_meta($id,'_currency',true);
 		$price=get_post_meta($id,'_price',true);
 		$menu=get_post_meta($id,'_menu',true);
 		$keypoints=get_post_meta($id,'_keypoints',true);
@@ -110,15 +110,15 @@ function meal_meta_box($object, $box)
 			<?php selectoptions($cuisine_data_final_array,$type_cuisine); ?>
 			</select>
 		</p>
-		<p class="form-field">
+		<!--<p class="form-field">
 			<label for="_currency">Currency:</label>
 			<select name="currency" id="currency">
 			<?php 
-				selectoptions($currency_data_final_array,$currency);
+				//selectoptions($currency_data_final_array,$currency);
 			?>
 			</select>
 			<!--<input type="text" name="currency" id="currency" value="<?php// echo $currency; ?>">-->
-		</p>
+		<!--</p>-->
 		
 		<p class="form-field">
 		<label for="_keypoints">Keypoints of a Meal</label>
@@ -162,7 +162,7 @@ $new_meta_value_min_guest = ( isset( $_POST['min_guest'] ) ? $_POST['min_guest']
 $new_meta_value_max_guest = ( isset( $_POST['max_guest'] ) ? $_POST['max_guest']  : '' );
 $new_meta_value_meal_type = ( isset( $_POST['meal_type'] ) ? $_POST['meal_type']  : '' );
 $new_meta_value_cuisine	=( isset( $_POST['type_cuisine'] )?$_POST['type_cuisine']  : '' );
-$new_meta_value_currency = ( isset( $_POST['currency'] ) ? $_POST['currency']  : '' );
+//$new_meta_value_currency = ( isset( $_POST['currency'] ) ? $_POST['currency']  : '' );
 $new_meta_value_menu = ( isset( $_POST['menu'] ) ? $_POST['menu']  : '' );
 $new_meta_value_keypoints = ( isset( $_POST['keypoints'] ) ? $_POST['keypoints']  : '' );
 
@@ -172,7 +172,7 @@ $new_meta_value_keypoints = ( isset( $_POST['keypoints'] ) ? $_POST['keypoints']
   $meta_key_max_guest = '_max_guest';
   $meta_key_meal_type = '_meal_type';
   $meta_key_type_cuisine = '_type_cuisine';
-  $meta_key_min_currency = '_currency';
+ // $meta_key_min_currency = '_currency';
   $meta_key_keypoints="_keypoints";
   $meta_key_menu = '_menu';
   
@@ -183,7 +183,7 @@ $new_meta_value_keypoints = ( isset( $_POST['keypoints'] ) ? $_POST['keypoints']
   $meta_value_max_guest = get_post_meta( $post_id, $meta_key_max_guest, true );
   $meta_value_meal_type = get_post_meta( $post_id, $meta_key_meal_type, true );
   $meta_value_type_cuisine = get_post_meta( $post_id, $meta_key_type_cuisine, true );
-  $meta_value_min_currency = get_post_meta( $post_id, $meta_key_min_currency, true );
+ // $meta_value_min_currency = get_post_meta( $post_id, $meta_key_min_currency, true );
   $meta_value_keypoints = get_post_meta( $post_id, $meta_key_keypoints, true );
   $meta_value_menu = get_post_meta( $post_id, $meta_key_menu, true );
 
@@ -265,7 +265,7 @@ elseif ( '' == $new_meta_value_cuisine && $meta_value_type_cuisine )
    delete_post_meta( $post_id, $meta_key_type_cuisine, $meta_value_type_cuisine );
   
   //currency
-  if ( $new_meta_value_currency && '' == $meta_value_min_currency )
+ /* if ( $new_meta_value_currency && '' == $meta_value_min_currency )
    add_post_meta( $post_id, $meta_key_min_currency, $new_meta_value_currency, true );
 
 elseif($new_meta_value_currency && $new_meta_value_currency != $meta_value_min_currency )
@@ -273,7 +273,7 @@ elseif($new_meta_value_currency && $new_meta_value_currency != $meta_value_min_c
   
 elseif ( '' == $new_meta_value_currency && $meta_value_min_currency )
    delete_post_meta( $post_id, $meta_key_min_currency, $meta_value_min_currency );
-   
+   */
      //keypoints
     if ( $new_meta_value_keypoints && '' == $meta_value_keypoints )
    add_post_meta( $post_id, $meta_key_keypoints, $new_meta_value_keypoints, true );

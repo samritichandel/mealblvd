@@ -282,9 +282,16 @@ function display_user_custom_hash( $user ) { ?>
     <h3>User Questions</h3>
 	<?php $user_meta= get_user_meta( $user->ID, 'questions');
 	$ques=$user_meta[0];
-	foreach($ques as $key=>$val)
+	if($ques)
 	{
-	  echo '<h4>' .$key.':</h4>'.$val;
+		foreach($ques as $key=>$val)
+		{
+		  echo '<h4>' .$key.':</h4>'.$val;
+		}
+	}
+	else
+	{
+		echo 'No user Questions';
 	}
 	
 }
@@ -350,11 +357,14 @@ function my_custom_fonts() {
   echo '<style>
   #meal_data .inside .wp_job_manager_meta_data #wp-menu-wrap {
      position : unset;
-    } 
+	  } 
+.wp_job_manager_meta_data .form-field:nth-child(8){width:100%;padding-left:0;}
+	.wp_job_manager_meta_data .wp-editor-wrap{width:100%;float:left;}
+   .wp_job_manager_meta_data .form-field > select{width:100%;}
   </style>';
 }
 
-//change calendar option in bookigs to dropdown
+//change calendar option in bookings to dropdown
 
 add_filter('booking_form_fields','wswp_booking_form_fields');
 
@@ -380,6 +390,9 @@ function wswp_booking_form_fields($fields) {
 }
 
 function wswp_build_options($rules,$building = false) {
+	//$prod_ava=new WC_Product_Booking('');
+	//$ava=$prod_ava->get_blocks_availability('2016-11-15','2016-11-15',4,'','');
+	//echo $ava;
 	global $wswp_dates_built;
 	foreach($rules as $dateset) {
 		
@@ -411,7 +424,7 @@ function wswp_build_options($rules,$building = false) {
 	ksort($dates); //sort in ascending
 	foreach($dates as $key => $date) {
 		$day=date('D', strtotime( date("Y-m-d",$key))); //fetch the week day
-        $dates[date("Y-m-d",$key)] = $day.'.'.date('M jS ',$key).' '.$date;  
+        $dates[date("Y-m-d",$key)] =$day.' '.date('M jS ',$key).' '.$date;  
         unset($dates[$key]);
     }
 	$new_dates = array('select' => 'Select') + $dates;
@@ -461,10 +474,8 @@ unset($fields['billing']['billing_company']);
 return $fields;
 }
 
-//custom fields to save data
-/**
 
-* save listing id on click of book now*/
+/* save listing id on click of book now*/
 add_action( 'wp_ajax_set_listing_id', 'set_listing_id' );    
 add_action( 'wp_ajax_nopriv_set_listing_id', 'set_listing_id' ); 
 function set_listing_id()
@@ -472,7 +483,7 @@ function set_listing_id()
 	$id=$_POST['id'];
 	session_start();
 	$_SESSION['wdm_user_custom_data'] = $id;
-	//echo 'ID'.$_SESSION['wdm_user_custom_data'];
+	echo 'ID'.$_SESSION['wdm_user_custom_data'];
 	exit();
 }
 
@@ -549,4 +560,19 @@ if(!function_exists('wdm_remove_user_custom_data_options_from_cart'))
             unset( $woocommerce->cart->cart_contents[ $key ] );
         }
     }
+}
+
+//
+/* Hide Addresses from User Profile */
+add_filter( 'woocommerce_customer_meta_fields', '__return_empty_array' );
+
+//get all bookings
+$args=array(
+'post_type'=> 'wc_booking',
+'post_status' => 'pending-confirmation'
+);
+$the_query=new WP_Query( $args );
+if($the_query)
+{
+	
 }
