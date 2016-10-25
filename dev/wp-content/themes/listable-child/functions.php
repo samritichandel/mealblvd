@@ -224,7 +224,7 @@ ob_start();
 $data = "";
 $count_posts = wp_count_posts( 'regques' )->publish;
 $args=array(
-'post_type'=> 'regques' //'Blog' is the name of the post whose content we want to get.
+'post_type'=> 'regques' //'regques' is the name of the post whose content we want to get.
 );
 $the_query=new WP_Query( $args );
 ?>
@@ -361,6 +361,7 @@ function my_custom_fonts() {
 .wp_job_manager_meta_data .form-field:nth-child(8){width:100%;padding-left:0;}
 	.wp_job_manager_meta_data .wp-editor-wrap{width:100%;float:left;}
    .wp_job_manager_meta_data .form-field > select{width:100%;}
+   #the-list .highlight_it {background: #999 !important;}
   </style>';
 }
 
@@ -566,13 +567,87 @@ if(!function_exists('wdm_remove_user_custom_data_options_from_cart'))
 /* Hide Addresses from User Profile */
 add_filter( 'woocommerce_customer_meta_fields', '__return_empty_array' );
 
-//get all bookings
-$args=array(
-'post_type'=> 'wc_booking',
-'post_status' => 'pending-confirmation'
+
+
+//code to highlight the bookings which have met the minimim threshold value
+function post_classes($classes) {
+   global $post;
+//get all bookings and fetch the booking wiht pending status
+$all_bookings = get_posts(
+ array(
+  'post_type' =>'wc_booking',
+  'post_status' =>'pending-confirmation',
+  'numberposts' => -1
+	)
 );
-$the_query=new WP_Query( $args );
-if($the_query)
+
+//get the bookings with pending confirmation
+$required_booking=array();
+foreach($all_bookings as $one_booking)
 {
-	
+	if($one_booking->post_status === 'pending-confirmation')
+	{
+		$required_booking[]=$one_booking;
+	}
 }
+//get the product id for each pending booking 
+$booking_product_id=array();
+$product_mininum_number_persons=array();
+foreach($required_booking as $req_book)
+{
+	$prod_id=get_post_meta($req_book->ID,'_booking_product_id',true);
+	if($prod_id)
+	{
+		$booking_product_id[]=$prod_id;
+		$minimum_pers=get_post_meta($prod_id,'_wc_minimum_guest',true);
+		$product_mininum_number_persons[]=$minimum_pers;
+	}
+}
+$new_array=array_combine($booking_product_id,$product_mininum_number_persons);
+//get the occurence of each product
+$vals = array_count_values($booking_product_id);
+$ids=array();
+foreach($new_array as $key=>$min_val)
+{
+	foreach($vals as $p_id=>$count)
+	{
+		if($key == $p_id )
+		{
+			if($count>=$min_val)
+			{
+				$ids[]=$p_id;
+			}
+		}
+	}
+}
+
+$booking_ids=array();
+foreach($required_booking as $test)
+{
+	$produ_id=get_post_meta($req_book->ID,'_booking_product_id',true);
+	if($produ_id)
+	{
+		if(in_array($produ_id,$ids))
+		{
+			$booking_ids[]=$test->ID;
+		}
+	}
+}
+   if(in_array($post->ID,$booking_ids)){
+        $classes[] = 'highlight_it';
+        return $classes;
+    }
+	else
+	{
+		$classes[]="";
+		return $classes;
+	}
+}
+add_filter('post_class', 'post_classes');
+
+
+
+
+
+
+

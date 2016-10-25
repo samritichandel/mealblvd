@@ -54,7 +54,7 @@ function listable_add_product_price_for_listing_archives( $post ) {
 	if ( ! empty( $products_IDs ) ) {
 		$first_productID = array_shift( $products_IDs );
 		$product = wc_get_product( $first_productID );
-		$output .= '<span class="product__price">' . $product->get_price_html() . '</span>';
+		$output .= '<span class="product__price"> </span>';
 	}
 
 	echo $output;

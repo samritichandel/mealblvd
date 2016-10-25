@@ -18,6 +18,7 @@ get_header(); ?>
 				<span class="entry-subtitle"><?php echo get_the_excerpt(8); ?></span>
 			</header>
 		<div class="entry-content">
+		<div class="container">
 			<main id="main" class="site-main" role="main">
 			<?php
 			global $wp_query, $current_jobs_shortcode;
@@ -51,7 +52,8 @@ get_header(); ?>
 				echo do_shortcode(  $shortcode );
 				$current_jobs_shortcode = null;
 			} ?>
-			</main><!-- #main -->
+			</main>
+			</div><!-- #main -->
 		</div>
 	</div><!-- #primary -->
 

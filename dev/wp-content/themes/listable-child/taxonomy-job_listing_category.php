@@ -20,6 +20,7 @@ get_header(); ?>
 			
 	
 		<div class="entry-content">
+		<div class="container">
 			<main id="main" class="site-main" role="main">
 			<?php
 			global $wp_query, $current_jobs_shortcode;
@@ -54,6 +55,7 @@ get_header(); ?>
 				$current_jobs_shortcode = null;
 			} ?>
 			</main><!-- #main -->
+			</div>
 		</div>
 	</div><!-- #primary -->
 

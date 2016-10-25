@@ -114,12 +114,10 @@ $listing_classes = apply_filters( 'listable_listing_archive_classes', $listing_c
 						?>
 						<?php 
 						$price=get_field('_price',$post->ID);
-						$currency=get_field('_currency',$post->ID);
-						if($price)
+						if(trim($price,' '))
 						{
 							echo '<div class="price">';
-							if($currency)
-								echo $currency;
+							echo '$';
 							echo $price;
 							echo '</div>';
 						}

@@ -74,8 +74,10 @@ switch ( $job->post_status ) :
 			add_post_meta($post_id, '_wc_booking_qty',$get_max_guest);
 			add_post_meta($post_id, '_wc_booking_has_persons','yes');
 			add_post_meta($post_id, '_wc_booking_person_qty_multiplier','yes');
-			add_post_meta($post_id, '_wc_booking_min_persons_group',$get_min_guest);
+			add_post_meta($post_id, '_wc_booking_min_persons_group',1);
 			add_post_meta($post_id, '_wc_booking_max_persons_group',$get_max_guest);
+			add_post_meta($post_id, '_wc_minimum_guest',$get_min_guest);
+			
 			add_post_meta($post_id, '_wc_booking_has_person_types','no');
 			add_post_meta($post_id, '_wc_booking_has_resources','no');
 			add_post_meta($post_id, '_wc_booking_resources_assignment','customer');
@@ -118,4 +120,3 @@ add_post_meta($post_id, '_wc_booking_default_date_availability','non-available')
 endswitch;
 
 do_action( 'job_manager_job_submitted_content_after', sanitize_title( $job->post_status ), $job );
-
